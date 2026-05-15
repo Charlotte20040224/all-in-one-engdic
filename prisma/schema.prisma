@@ -74,6 +74,8 @@ model Word {
   userId      String
   thai        String
   pinyin      String?
+  pinyinUS    String?
+  pinyinGB    String?
   meaning     String?
   pos         String?
   examples    Json?
@@ -97,6 +99,8 @@ model Sentence {
   userId      String
   thai        String
   pinyin      String
+  pinyinUS    String?
+  pinyinGB    String?
   zh          String
   grammar     String?
   grammarPattern String?

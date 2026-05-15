@@ -9,7 +9,7 @@ import {
   sentenceLevelLabel,
   sentenceLevelColor,
 } from '@/lib/sentenceSrs'
-import type { SentenceEntry, VocabItem } from '@/lib/types'
+import { getPinyinDisplay, type SentenceEntry, type VocabItem } from '@/lib/types'
 
 export default function SentenceReviewPage() {
   const [queue, setQueue] = useState<SentenceEntry[]>([])
@@ -145,7 +145,14 @@ export default function SentenceReviewPage() {
                 {sentence.thai}
               </span>
             </div>
-            <div data-pinyin className="text-purple-600 dark:text-purple-400 text-sm mb-1">{sentence.pinyin}</div>
+            <div data-pinyin className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getPinyinDisplay(sentence).map((p, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  {p.label && <span>{p.label}</span>}
+                  <span>{p.ipa}</span>
+                </span>
+              ))}
+            </div>
             <div className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">{sentence.zh}</div>
 
             {sentence.grammar && (

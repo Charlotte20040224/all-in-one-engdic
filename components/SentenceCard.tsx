@@ -1,6 +1,6 @@
 'use client'
 
-import { SentenceEntry, VocabItem } from '@/lib/types'
+import { SentenceEntry, VocabItem, getPinyinDisplay } from '@/lib/types'
 import { sentenceLevel, sentenceLevelLabel, sentenceLevelColor } from '@/lib/sentenceSrs'
 import { SpeakButton } from './SpeakButton'
 import { FavoriteButton } from './FavoriteButton'
@@ -38,7 +38,14 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
               {sentence.thai}
             </span>
           </div>
-          <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400 mt-1">{sentence.pinyin}</div>
+          <div data-pinyin className="mt-1 text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {getPinyinDisplay(sentence).map((p, i) => (
+              <span key={i} className="flex items-center gap-1.5">
+                {p.label && <span>{p.label}</span>}
+                <span>{p.ipa}</span>
+              </span>
+            ))}
+          </div>
           <div className="text-gray-700 dark:text-gray-300 mt-1">{sentence.zh}</div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">

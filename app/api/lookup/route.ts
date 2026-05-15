@@ -9,9 +9,8 @@ import { rateLimit, tooManyRequests } from '@/lib/rateLimit'
 // - pinyin → IPA 國際音標（含 / / 包圍與重音符號 ˈ ˌ）
 // - meaning / pos / examples.zh 等中文欄位 → 一律繁體中文
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-
 export async function POST(req: Request) {
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -30,7 +29,15 @@ export async function POST(req: Request) {
 - "thai" 欄位必須是英文單字／片語（只能使用拉丁字母、空格、連字號 -、撇號 '），不能填中文
 - 如果使用者輸入中文（例如「跳」、「謝謝」），請先翻成最常用、最自然的英文再填入 "thai"
 - 如果使用者輸入英文，直接放入 "thai"
-- "pinyin" 必須是 IPA 國際音標，用 / / 包起來（例如 /dʒʌmp/、/ˈhæpi/）；重音用 ˈ（主重音）和 ˌ（次重音）
+- "pinyin" 必須是 IPA 國際音標，用 / / 包起來；重音用 ˈ（主重音）和 ˌ（次重音）。預設用美式發音
+- "pinyinUS" = 美式發音的 IPA（用 / / 包起來）
+- "pinyinGB" = 英式發音的 IPA（用 / / 包起來）
+- pinyinUS 與 pinyinGB 一律都要回。**只有在英美發音「明顯可聽出差別」時才填不同值**，否則兩個欄位填完全一樣
+- 「明顯差別」指：(a) 不同子音（例：schedule /ˈskedʒuːl/ vs /ˈʃedjuːl/），(b) 不同母音音質（例：tomato /təˈmeɪtoʊ/ vs /təˈmɑːtəʊ/、dance /dæns/ vs /dɑːns/、can't /kænt/ vs /kɑːnt/、path /pæθ/ vs /pɑːθ/），(c) 重音位置不同（例：advertisement、garage），(d) 多音節整體節奏不同
+- 「不明顯差別」**不要分開填**，兩邊填一樣即可：
+   * 只是字尾 /r/ 的捲舌差異（water、teacher、doctor、mother、sister 等所有 -er 結尾）
+   * 只是 /oʊ/ vs /əʊ/ 的雙母音細節（hello、go、no、so 這類），請統一用 /oʊ/
+   * 只是 /ɪ/ vs /ə/ 的弱音節差異
 - "pos" 用繁體中文表示詞性，可用「名詞 / 動詞 / 形容詞 / 副詞 / 介系詞 / 連接詞 / 代名詞 / 感嘆詞 / 助動詞 / 片語動詞 / 慣用語」等
 - 如果不確定，寧可省略也不要猜測`
 
@@ -43,7 +50,7 @@ ${commonRules}
 - 例如：bank → "銀行；河岸；倚靠"
 
 只回 JSON（只給 1 個例句，例句不需 vocabulary 或 grammar）：
-{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə fens/","zh":"他跳過了圍牆。"}]}
+{"thai":"jump","pinyin":"/dʒʌmp/","pinyinUS":"/dʒʌmp/","pinyinGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə fens/","zh":"他跳過了圍牆。"}]}
 
 注意：thai 必須是英文，不能填「${query}」本身（除非輸入就是英文）。`
 
@@ -88,7 +95,7 @@ grammar 欄位（句型分析）：
 - 如有重要文法點（時態、語氣、片語動詞、慣用語），可附帶說明
 
 只回 JSON：
-{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the high fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə haɪ fens/","zh":"他跳過了高的圍牆。","vocabulary":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳"},{"thai":"over","pinyin":"/ˈoʊvər/","meaning":"越過"},{"thai":"fence","pinyin":"/fens/","meaning":"圍牆"},{"thai":"high","pinyin":"/haɪ/","meaning":"高的"}],"grammar":"S + V(過去式) + over + N（主詞 + 動詞 + 介系詞 + 受詞），描述跨越動作"}],"collocations":[{"thai":"jump rope","pinyin":"/dʒʌmp roʊp/","zh":"跳繩"},{"thai":"jump in","pinyin":"/dʒʌmp ɪn/","zh":"加入、插話"}],"synonyms":[{"thai":"leap","pinyin":"/liːp/","zh":"跳躍（較文學）"},{"thai":"hop","pinyin":"/hɒp/","zh":"單腳跳"}],"antonyms":[{"thai":"land","pinyin":"/lænd/","zh":"著陸、降落"}],"related":[{"thai":"skip","pinyin":"/skɪp/","zh":"蹦蹦跳跳、略過"},{"thai":"bounce","pinyin":"/baʊns/","zh":"彈跳"}],"variants":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳、跳躍","frequency":"最常用","context":"標準說法"},{"thai":"leap","pinyin":"/liːp/","meaning":"躍、大跳","frequency":"常用","context":"較文學或強調幅度"},{"thai":"hop","pinyin":"/hɒp/","meaning":"單腳跳、小跳","frequency":"常用","context":"小跳或輕鬆語氣"}]}
+{"thai":"jump","pinyin":"/dʒʌmp/","pinyinUS":"/dʒʌmp/","pinyinGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the high fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə haɪ fens/","zh":"他跳過了高的圍牆。","vocabulary":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳"},{"thai":"over","pinyin":"/ˈoʊvər/","meaning":"越過"},{"thai":"fence","pinyin":"/fens/","meaning":"圍牆"},{"thai":"high","pinyin":"/haɪ/","meaning":"高的"}],"grammar":"S + V(過去式) + over + N（主詞 + 動詞 + 介系詞 + 受詞），描述跨越動作"}],"collocations":[{"thai":"jump rope","pinyin":"/dʒʌmp roʊp/","zh":"跳繩"},{"thai":"jump in","pinyin":"/dʒʌmp ɪn/","zh":"加入、插話"}],"synonyms":[{"thai":"leap","pinyin":"/liːp/","zh":"跳躍（較文學）"},{"thai":"hop","pinyin":"/hɒp/","zh":"單腳跳"}],"antonyms":[{"thai":"land","pinyin":"/lænd/","zh":"著陸、降落"}],"related":[{"thai":"skip","pinyin":"/skɪp/","zh":"蹦蹦跳跳、略過"},{"thai":"bounce","pinyin":"/baʊns/","zh":"彈跳"}],"variants":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳、跳躍","frequency":"最常用","context":"標準說法"},{"thai":"leap","pinyin":"/liːp/","meaning":"躍、大跳","frequency":"常用","context":"較文學或強調幅度"},{"thai":"hop","pinyin":"/hɒp/","meaning":"單腳跳、小跳","frequency":"常用","context":"小跳或輕鬆語氣"}]}
 
 注意：thai 必須是英文。`
 

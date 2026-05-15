@@ -10,7 +10,7 @@ import { ShareButton } from '@/components/ShareButton'
 import { grammarPatterns, type GrammarPattern } from '@/data/grammarPatterns'
 import { bumpStudyLog } from '@/lib/studyLog'
 import { shareWordImage } from '@/lib/shareImage'
-import type { LookupResult } from '@/lib/types'
+import { getPinyinDisplay, type LookupResult } from '@/lib/types'
 
 type LookupMode = 'quick' | 'full'
 
@@ -337,9 +337,14 @@ function AddPageInner() {
                 }}
               />
             </div>
-            {result.pinyin && (
-              <div data-pinyin className="text-purple-600 dark:text-purple-400">{result.pinyin}</div>
-            )}
+            <div data-pinyin className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getPinyinDisplay(result).map((p, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  {p.label && <span className="text-base">{p.label}</span>}
+                  <span>{p.ipa}</span>
+                </span>
+              ))}
+            </div>
             <div className="flex items-center gap-2">
               <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">{result.pos}</span>
               <span className="font-semibold text-gray-900 dark:text-white">{result.meaning}</span>

@@ -7,7 +7,7 @@ import { ModeTabs } from '@/components/ModeTabs'
 import { prefetchAudio } from '@/lib/tts'
 import { srsLabel, srsColor } from '@/lib/srs'
 import { bumpStudyLog } from '@/lib/studyLog'
-import type { WordEntry, WordRef, VocabItem } from '@/lib/types'
+import { getPinyinDisplay, type WordEntry, type WordRef, type VocabItem } from '@/lib/types'
 
 type Rating = 'hard' | 'ok' | 'easy'
 type ReviewMode = 'flip' | 'fill'
@@ -321,7 +321,14 @@ export default function ReviewPage() {
               <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white">{word.thai}</span>
               <SpeakButton text={word.thai} size="md" />
             </div>
-            <div data-pinyin className="text-purple-600 dark:text-purple-400 text-sm mb-1">{word.pinyin}</div>
+            <div data-pinyin className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getPinyinDisplay(word).map((p, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  {p.label && <span>{p.label}</span>}
+                  <span>{p.ipa}</span>
+                </span>
+              ))}
+            </div>
             <div className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">{word.meaning}</div>
 
             {examples.slice(0, 2).map((ex: any, i: number) => (

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { SpeakButton } from '@/components/SpeakButton'
 import { ClickableThai } from '@/components/ClickableThai'
 import { ModeTabs } from '@/components/ModeTabs'
-import type { SentenceLookupResult } from '@/lib/types'
+import { getPinyinDisplay, type SentenceLookupResult } from '@/lib/types'
 
 export default function SentenceAddPage() {
   const [query, setQuery] = useState('')
@@ -136,7 +136,14 @@ export default function SentenceAddPage() {
                 {result.thai}
               </span>
             </div>
-            <div data-pinyin className="text-purple-600 dark:text-purple-400">{result.pinyin}</div>
+            <div data-pinyin className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getPinyinDisplay(result).map((p, i) => (
+                <span key={i} className="flex items-center gap-1.5">
+                  {p.label && <span className="text-base">{p.label}</span>}
+                  <span>{p.ipa}</span>
+                </span>
+              ))}
+            </div>
             <div className="text-gray-800 dark:text-gray-200 font-medium">{result.zh}</div>
 
             {result.grammar && (

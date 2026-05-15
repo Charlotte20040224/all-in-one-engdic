@@ -25,8 +25,8 @@ export async function POST(req: Request) {
   }
 
   const tooLongStr = findTooLongString({
-    thai: body.thai, pinyin: body.pinyin, zh: body.zh,
-    grammar: body.grammar, grammarPattern: body.grammarPattern,
+    thai: body.thai, pinyin: body.pinyin, pinyinUS: body.pinyinUS, pinyinGB: body.pinyinGB,
+    zh: body.zh, grammar: body.grammar, grammarPattern: body.grammarPattern,
   })
   if (tooLongStr) return NextResponse.json({ error: `${tooLongStr} too long (max 200)` }, { status: 400 })
 
@@ -38,6 +38,8 @@ export async function POST(req: Request) {
       userId: session.user.id,
       thai: body.thai,
       pinyin: body.pinyin,
+      pinyinUS: body.pinyinUS ?? null,
+      pinyinGB: body.pinyinGB ?? null,
       zh: body.zh,
       grammar: body.grammar ?? null,
       grammarPattern: body.grammarPattern ?? null,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { WordEntry, WordRef, Variant, VocabItem } from '@/lib/types'
+import { WordEntry, WordRef, Variant, VocabItem, getPinyinDisplay } from '@/lib/types'
 import { srsLabel, srsColor } from '@/lib/srs'
 import { SpeakButton } from './SpeakButton'
 import { FavoriteButton } from './FavoriteButton'
@@ -223,7 +223,14 @@ export function WordCard({ word, onDelete, compact }: Props) {
               }}
             />
           </div>
-          <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400">{word.pinyin}</div>
+          <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {getPinyinDisplay(word).map((p, i) => (
+              <span key={i} className="flex items-center gap-1.5">
+                {p.label && <span>{p.label}</span>}
+                <span>{p.ipa}</span>
+              </span>
+            ))}
+          </div>
           {word.meaning && (
             <p className="text-gray-700 dark:text-gray-300 font-medium mt-1">{word.meaning}</p>
           )}

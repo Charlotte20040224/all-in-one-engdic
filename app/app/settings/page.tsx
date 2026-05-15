@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { setTtsSpeedCache } from '@/lib/tts'
+import { setTtsSpeedCache, getTtsVoice, setTtsVoiceCache, type TtsVoice } from '@/lib/tts'
 import {
   REMINDER_ENABLED_KEY,
   REMINDER_TIME_KEY,
@@ -15,10 +15,18 @@ const SPEED_OPTIONS = [
   { value: 1.2, label: '🏃 快速', desc: '進階' },
 ]
 
+const VOICE_OPTIONS: { value: TtsVoice; emoji: string; accent: string; gender: string }[] = [
+  { value: 'us-f', emoji: '🇺🇸', accent: '美式', gender: '女聲' },
+  { value: 'us-m', emoji: '🇺🇸', accent: '美式', gender: '男聲' },
+  { value: 'gb-f', emoji: '🇬🇧', accent: '英式', gender: '女聲' },
+  { value: 'gb-m', emoji: '🇬🇧', accent: '英式', gender: '男聲' },
+]
+
 export default function SettingsPage() {
   const { data: session, update: updateSession } = useSession()
   const [dailyGoal, setDailyGoal] = useState(10)
   const [ttsSpeed, setTtsSpeed] = useState(0.7)
+  const [ttsVoice, setTtsVoiceState] = useState<TtsVoice>('us-f')
   const [saved, setSaved] = useState(false)
   const [loading, setLoading] = useState(true)
   const [reminderEnabled, setReminderEnabled] = useState(false)
@@ -49,6 +57,7 @@ export default function SettingsPage() {
     if (typeof window !== 'undefined') {
       setReminderEnabled(localStorage.getItem(REMINDER_ENABLED_KEY) === '1')
       setReminderTime(localStorage.getItem(REMINDER_TIME_KEY) || DEFAULT_REMINDER_TIME)
+      setTtsVoiceState(getTtsVoice())
       if (typeof Notification === 'undefined') setPermission('unsupported')
       else setPermission(Notification.permission)
     }
@@ -200,6 +209,35 @@ export default function SettingsPage() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* TTS voice */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+            發音語音
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {VOICE_OPTIONS.map(opt => (
+              <button
+                key={opt.value}
+                onClick={() => {
+                  setTtsVoiceState(opt.value)
+                  setTtsVoiceCache(opt.value)
+                }}
+                className={`flex items-center justify-center gap-2 py-3 px-2 rounded-xl border-2 transition ${
+                  ttsVoice === opt.value
+                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                    : 'border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-purple-300'
+                }`}
+              >
+                <span className="text-xl">{opt.emoji}</span>
+                <span className="text-sm font-medium">{opt.accent} {opt.gender}</span>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+            🔊 點任何單字旁的喇叭按鈕就會用所選語音播放
+          </p>
         </div>
 
         <button

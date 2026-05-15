@@ -2,6 +2,8 @@ export interface WordEntry {
   id: string
   thai: string
   pinyin: string | null
+  pinyinUS: string | null
+  pinyinGB: string | null
   meaning: string | null
   pos: string | null
   examples: Example[]
@@ -48,6 +50,8 @@ export interface Variant {
 export interface LookupResult {
   thai: string
   pinyin: string
+  pinyinUS?: string
+  pinyinGB?: string
   meaning: string
   pos: string
   examples: Example[]
@@ -63,6 +67,8 @@ export interface SentenceEntry {
   id: string
   thai: string
   pinyin: string
+  pinyinUS: string | null
+  pinyinGB: string | null
   zh: string
   grammar: string | null
   grammarPattern: string | null
@@ -77,8 +83,31 @@ export interface SentenceEntry {
 export interface SentenceLookupResult {
   thai: string
   pinyin: string
+  pinyinUS?: string
+  pinyinGB?: string
   zh: string
   grammar: string
   grammarPattern: string
   vocabulary: VocabItem[]
+}
+
+// Render IPA pronunciation:
+//  - if US/GB differ → two flagged variants
+//  - if same / one missing → single unflagged value
+// Returns an array so consumers can `.map()` them into UI directly.
+export interface PinyinDisplay {
+  label?: '🇺🇸' | '🇬🇧'
+  ipa: string
+}
+
+export function getPinyinDisplay(item: {
+  pinyin?: string | null
+  pinyinUS?: string | null
+  pinyinGB?: string | null
+}): PinyinDisplay[] {
+  const us = (item.pinyinUS ?? '').trim()
+  const gb = (item.pinyinGB ?? '').trim()
+  if (us && gb && us !== gb) return [{ label: '🇺🇸', ipa: us }, { label: '🇬🇧', ipa: gb }]
+  const single = us || gb || (item.pinyin ?? '').trim()
+  return single ? [{ ipa: single }] : []
 }
