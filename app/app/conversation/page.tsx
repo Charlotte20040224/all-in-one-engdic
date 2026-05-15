@@ -9,7 +9,7 @@ export default function ConversationPage() {
         <br />
         這個功能將讓你模擬真實情境對話，
         <br />
-        練習開口說英文 🇹🇭
+        練習開口說英文 📖
         <br />
         敬請期待！
       </p>

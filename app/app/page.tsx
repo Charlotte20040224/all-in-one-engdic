@@ -32,7 +32,7 @@ const THEMES = [
   { key: '🏨 住宿 & 飯店', short: '🏨 住宿' },
   { key: '🏥 緊急狀況 & 求助', short: '🏥 緊急' },
   { key: '💬 日常閒聊', short: '💬 閒聊' },
-  { key: '🙏 泰國文化禮儀', short: '🙏 文化' },
+  { key: '🎓 學業 & 工作', short: '🎓 學業' },
   { key: '💆 休閒娛樂', short: '💆 休閒' },
   { key: '🔢 數字 & 時間', short: '🔢 數字' },
 ]

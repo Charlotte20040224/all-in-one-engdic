@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '@/app/theme-provider'
-import { useFont, FontStyle } from '@/app/font-provider'
 import { usePinyin } from '@/app/pinyin-provider'
 
 const primaryLinks = [
@@ -23,28 +22,17 @@ const secondaryLinks: { href: string; label: string; icon: string }[] = [
   { href: '/app/about',     label: '關於開發者', icon: '🛠️' },
 ]
 
-const FONT_OPTIONS: { id: FontStyle; label: string }[] = [
-  { id: 'default', label: '標準字體' },
-  { id: 'kanit',   label: 'Kanit（海報體）' },
-  { id: 'sarabun', label: 'Sarabun（政府/正式）' },
-  { id: 'mitr',    label: 'Mitr（圓潤可愛）' },
-  { id: 'prompt',  label: 'Prompt（設計感）' },
-]
-
 export function NavBar() {
   const pathname = usePathname()
   const { theme, toggle } = useTheme()
-  const { fontStyle, setFont } = useFont()
   const { hidden: pinyinHidden, toggle: togglePinyin } = usePinyin()
   const [moreOpen, setMoreOpen] = useState(false)
-  const [fontExpanded, setFontExpanded] = useState(false)
   const moreRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
         setMoreOpen(false)
-        setFontExpanded(false)
       }
     }
     document.addEventListener('mousedown', handler)
@@ -53,7 +41,6 @@ export function NavBar() {
 
   const closeMore = () => {
     setMoreOpen(false)
-    setFontExpanded(false)
   }
 
   const navLinkClass = (href: string) =>
@@ -79,7 +66,7 @@ export function NavBar() {
 
           <div ref={moreRef} className="relative">
             <button
-              onClick={() => { setMoreOpen(o => !o); setFontExpanded(false) }}
+              onClick={() => setMoreOpen(o => !o)}
               title={moreOpen ? '收合' : '更多'}
               aria-label={moreOpen ? '收合更多選項' : '展開更多選項'}
               aria-expanded={moreOpen}
@@ -110,30 +97,6 @@ export function NavBar() {
                 })}
 
                 <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
-
-                <button
-                  onClick={() => setFontExpanded(e => !e)}
-                  className={menuItemClass}
-                  aria-expanded={fontExpanded}
-                >
-                  <span className="font-serif italic">abc</span>
-                  <span>字體切換</span>
-                  <span className="ml-auto text-xs text-gray-400">{fontExpanded ? '▾' : '▸'}</span>
-                </button>
-                {fontExpanded && (
-                  <div className="bg-gray-50 dark:bg-gray-900/40">
-                    {FONT_OPTIONS.map(opt => (
-                      <button
-                        key={opt.id}
-                        onClick={() => { setFont(opt.id); setFontExpanded(false) }}
-                        className="w-full flex items-center justify-between pl-10 pr-4 py-1.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
-                      >
-                        <span>{opt.label}</span>
-                        {fontStyle === opt.id && <span className="text-purple-500">✓</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
 
                 <button onClick={() => { togglePinyin(); closeMore() }} className={menuItemClass}>
                   <span>👁️</span>

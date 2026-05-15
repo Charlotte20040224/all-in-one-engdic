@@ -39,7 +39,7 @@ export function LoginPage() {
 
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🇹🇭</div>
+          <div className="text-5xl mb-3">📖</div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">英文單字學習</h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">用 SRS 系統高效學習英文</p>
         </div>

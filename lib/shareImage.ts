@@ -1,11 +1,12 @@
 // Canvas-based 1080×1920 IG Story image generator.
 //
 // Two layouts: grammar pattern share, single-word share. Both use the same
-// header (top bar + 🇹🇭 strap), padding, footer (@hue_0224 · domain).
+// header (top bar + 📖 strap), padding, footer (@hue_0224 · domain).
 //
-// Fonts: Sarabun for Thai/Latin, Noto Serif TC for Chinese — both pulled from
-// the Google Fonts import in app/globals.css. We trigger explicit loads via
-// document.fonts.load() before drawing so the canvas doesn't fall back.
+// Fonts: system sans-serif for English/Latin, Noto Serif TC for Chinese —
+// the Chinese font is pulled from the Google Fonts import in app/globals.css.
+// We trigger explicit loads via document.fonts.load() before drawing so the
+// canvas doesn't fall back.
 
 const W = 1080
 const H = 1920
@@ -13,8 +14,8 @@ const PAD = 80
 const CONTENT_W = W - PAD * 2
 const FOOTER_TEXT = '@hue_0224 · all-in-one-engdic.vercel.app'
 
-const TH = '"Sarabun", "Noto Serif TC", sans-serif'
-const ZH = '"Noto Serif TC", "Sarabun", serif'
+const TH = 'system-ui, -apple-system, "Segoe UI", "Noto Serif TC", sans-serif'
+const ZH = '"Noto Serif TC", system-ui, serif'
 
 async function ensureFonts(): Promise<void> {
   if (typeof document === 'undefined' || !(document as any).fonts) return
@@ -75,7 +76,7 @@ function drawHeader(d: DrawCtx, label: string) {
   d.ctx.font = `500 36px ${ZH}`
   d.ctx.textBaseline = 'alphabetic'
   d.cursor = 130
-  d.ctx.fillText(`🇹🇭  ${label}`, PAD, d.cursor)
+  d.ctx.fillText(`📖  ${label}`, PAD, d.cursor)
   d.cursor += 30
   // separator
   d.ctx.fillStyle = '#e5e7eb'

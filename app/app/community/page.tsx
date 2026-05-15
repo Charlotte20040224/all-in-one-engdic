@@ -39,12 +39,12 @@ const TYPE_META: Record<PostType, { label: string; emoji: string; placeholder: s
   motivation: {
     label: '學習動機',
     emoji: '💪',
-    placeholder: '我學英文是因為... （例如：喜歡泰劇、想跟泰國朋友聊天、計畫去旅遊...）',
+    placeholder: '我學英文是因為... （例如：想看懂影集、想出國旅遊、考多益升學...）',
   },
   goal: {
     label: '學習目標',
     emoji: '🎯',
-    placeholder: '我的學英文目標是... （例如：3個月後能夠自己點餐）',
+    placeholder: '我的學英文目標是... （例如：3 個月後能夠自己點餐）',
   },
   note: {
     label: '學習心得',
@@ -52,14 +52,14 @@ const TYPE_META: Record<PostType, { label: string; emoji: string; placeholder: s
     placeholder: '學英文的心得分享...',
   },
   knowledge: {
-    label: '泰國小知識',
-    emoji: '🇹🇭',
-    placeholder: '你知道嗎？分享一個泰國小知識...',
+    label: '英文小知識',
+    emoji: '💡',
+    placeholder: '你知道嗎？分享一個英文小知識... （單字、片語、文法、文化背景）',
   },
   travel: {
-    label: '泰國旅遊心得',
+    label: '出國經驗',
     emoji: '✈️',
-    placeholder: '分享你的泰國旅遊心得... （景點、美食、有趣的經驗...）',
+    placeholder: '分享你的出國經驗... （怎麼用英文點餐、問路、跟當地人聊天）',
   },
   other: {
     label: '其他',
