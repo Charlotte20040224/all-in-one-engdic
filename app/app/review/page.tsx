@@ -376,7 +376,7 @@ export default function ReviewPage() {
             )}
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/thai`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}

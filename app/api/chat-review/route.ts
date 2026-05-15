@@ -22,18 +22,18 @@ export async function POST(req: Request) {
   console.log('[chat-review] received:', text.length, 'chars')
   const startedAt = Date.now()
 
-  const prompt = `分析下面英文聊天記錄，提取有學習價值的英文單字與句子。
+  const prompt = `分析下面聊天記錄／文章，提取有學習價值的英文單字與句子。
 
-過濾忽略：人名、時間戳、系統訊息（已讀／撤回等）、emoji、數字／電話／帳號、URL、@提及、#標籤。
-只取含 ก-ฮ 的英文，忽略中英。中文一律繁體。
-拼音 thai2english：ก=g、ต=dt、ป=bp、เดิน=dern；à低、â降、á高、ǎ升。
+過濾忽略：人名、時間戳、系統訊息（已讀／撤回等）、emoji、純數字／電話／帳號、URL、@提及、#標籤。
+只取英文單字與句子，忽略中文部分。中文說明一律使用繁體中文。
+"pinyin" 欄位填 IPA 國際音標（用 / / 包圍，重音用 ˈ）。
 
-⚠️ 嚴格上限：words ≤ 20 個（按重要性挑最值得學的）、sentences ≤ 10 個（最常用的）。
+⚠️ 嚴格上限：words ≤ 20 個（挑最值得學的，避開 the / a / is 等基本詞）、sentences ≤ 10 個（最有學習價值的）。
 寧可少也不要讓 JSON 不完整被截斷。回傳必須是合法 JSON。
 
-格式：{"words":[{"thai":"","pinyin":"","zh":"","context":"出現在：原片段"}],"sentences":[{"thai":"","pinyin":"","zh":"","grammar":"句型／語氣簡述"}]}
+格式：{"words":[{"thai":"jump","pinyin":"/dʒʌmp/","zh":"跳","context":"出現在：原片段"}],"sentences":[{"thai":"I'm running late.","pinyin":"/aɪm ˈrʌnɪŋ leɪt/","zh":"我要遲到了。","grammar":"S + be + V-ing 現在進行式 + adj 補語"}]}
 
-聊天記錄：
+聊天記錄／文章：
 ${text}`
 
   const friendlyError = { error: '分析失敗，請稍後再試 🙏' }
@@ -43,7 +43,7 @@ ${text}`
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 8192,
-      system: '泰語學習助手。只提取英文，所有說明用繁體中文（Traditional Chinese）。拼音照 thai2english.com 標準（ก=g、ต=dt、ป=bp、เดิน=dern）。輸出必須是嚴格合法的 JSON，每個 array 元素之間都要有逗號，不可有多餘的逗號。',
+      system: '英文學習助手。只提取英文單字與句子，所有說明使用繁體中文（Traditional Chinese）。pinyin 欄位一律使用 IPA 國際音標（用 / / 包圍）。輸出必須是嚴格合法的 JSON，每個 array 元素之間都要有逗號，不可有多餘的逗號。',
       messages: [
         { role: 'user', content: prompt },
         { role: 'assistant', content: '{' },

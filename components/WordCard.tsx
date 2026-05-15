@@ -13,13 +13,13 @@ interface Props {
   compact?: boolean
 }
 
-// Parse note text: Thai（pinyin） patterns get styled separately
+// Parse note text: English（IPA / annotation） patterns get styled separately
 function renderNote(note: string): React.ReactNode {
-  const parts = note.split(/([฀-๿]+（[^）]+）)/)
+  const parts = note.split(/([A-Za-z][A-Za-z'’\- ]*（[^）]+）)/)
   return (
     <>
       {parts.map((part, i) => {
-        const m = part.match(/^([฀-๿]+)（([^）]+)）$/)
+        const m = part.match(/^([A-Za-z][A-Za-z'’\- ]*)（([^）]+)）$/)
         if (m) {
           return (
             <span key={i}>
@@ -327,7 +327,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
           {/* External links */}
           <div className="flex items-center gap-3 flex-wrap">
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/thai`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -335,7 +335,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
               🎬 在 YouGlish 聽真實發音
             </a>
             <a
-              href={`https://www.youtube.com/results?search_query=${encodeURIComponent('สอน ' + word.thai + ' ภาษาไทย')}`}
+              href={`https://www.youtube.com/results?search_query=${encodeURIComponent('English vocabulary ' + word.thai + ' meaning')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-red-600 dark:text-red-400 hover:underline"

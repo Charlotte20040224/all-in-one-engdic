@@ -8,7 +8,7 @@ export interface FavoriteSentence {
   thai: string
   romanization?: string
   chinese?: string
-  source?: string  // e.g. "句型 #34", "單字 ต้อง"
+  source?: string  // e.g. "句型 #34", "單字 must"
   addedAt: number
 }
 

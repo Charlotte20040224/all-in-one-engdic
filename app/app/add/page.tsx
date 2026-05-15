@@ -262,7 +262,7 @@ function AddPageInner() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && lookup()}
-            placeholder="例：สวัสดี 或 你好"
+            placeholder="例：hello 或 你好"
             className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           <button
@@ -337,7 +337,7 @@ function AddPageInner() {
                 }}
               />
             </div>
-            {result.thai && /[฀-๿]/.test(result.thai) && (
+            {result.pinyin && (
               <div data-pinyin className="text-purple-600 dark:text-purple-400">{result.pinyin}</div>
             )}
             <div className="flex items-center gap-2">
@@ -446,7 +446,7 @@ function AddPageInner() {
             <RelatedPatterns thai={result.thai} />
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/thai`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"

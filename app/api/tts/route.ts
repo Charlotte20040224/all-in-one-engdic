@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         input: { text: text.trim() },
-        voice: { languageCode: 'th-TH', name: 'th-TH-Neural2-C', ssmlGender: 'FEMALE' },
-        audioConfig: { audioEncoding: 'MP3', speakingRate, pitch: -1.0, effectsProfileId: ['headphone-class-device'] },
+        voice: { languageCode: 'en-US', name: 'en-US-Neural2-F', ssmlGender: 'FEMALE' },
+        audioConfig: { audioEncoding: 'MP3', speakingRate, pitch: 0.0, effectsProfileId: ['headphone-class-device'] },
       }),
     }
   )

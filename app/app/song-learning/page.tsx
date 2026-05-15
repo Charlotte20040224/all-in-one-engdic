@@ -175,13 +175,13 @@ export default function SongLearningPage() {
           value={songName}
           onChange={e => setSongName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && analyze()}
-          placeholder="輸入英文歌曲名稱，例如：ลืมไปแล้วว่าลืมยังไง"
+          placeholder="輸入英文歌曲名稱，例如：Shape of You / Perfect"
           className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <p className="text-xs text-gray-400 dark:text-gray-500 leading-relaxed">
-          💡 建議輸入英文歌名，效果最好！<br />
-          輸入英文或中文歌名可能找不到結果。<br />
-          不知道英文歌名？可以先去 YouTube 搜尋，<br />
+          💡 建議輸入英文歌名（原文），效果最好！<br />
+          中文歌名可能找不到結果。<br />
+          不確定歌名？可以先去 YouTube 搜尋，<br />
           歌名通常會顯示在標題旁邊 🎵
         </p>
         <button

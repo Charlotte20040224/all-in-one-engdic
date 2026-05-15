@@ -65,7 +65,7 @@ function DonationFloat() {
           </p>
 
           <p className="text-xs text-gray-700 dark:text-gray-300 leading-relaxed">
-            สวัสดีค่ะทุกคน 🙏 我是 Charlotte！是一名半工半讀養活自己的大學生。你們每一次查詢都會從我的帳戶扣款 🫠 即使是一杯 ☕️ 的錢，我都會感到非常感恩，並持續優化系統和開放字典讓大家使用。
+            Hi everyone 🙏 我是 Charlotte！是一名半工半讀養活自己的大學生。你們每一次查詢都會從我的帳戶扣款 🫠 即使是一杯 ☕️ 的錢，我都會感到非常感恩，並持續優化系統和開放字典讓大家使用。
           </p>
 
           <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 space-y-1">

@@ -172,7 +172,7 @@ export default function SentenceReviewPage() {
             )}
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/thai`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}

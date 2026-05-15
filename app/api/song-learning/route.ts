@@ -28,18 +28,18 @@ export async function POST(req: Request) {
 搜尋英文歌曲「${trimmed}」並回傳以下 JSON，不要有任何其他文字。
 
 ⚠️ 嚴禁版權問題：絕對不可以回傳完整歌詞段落、不可連續複製超過 1 句歌詞。
-你只能挑出「精選代表性短句」做泰中對照（不是把整首歌翻譯出來）。
+你只能挑出「精選代表性短句」做英中對照（不是把整首歌翻譯出來）。
 
-⚠️ 嚴格上限：words ≤ 20 個（最值得學的單字）、sentences ≤ 10 個（有代表性的精選短句）。
+⚠️ 嚴格上限：words ≤ 20 個（最值得學的單字，避開 the / a / is 等基本詞）、sentences ≤ 10 個（有代表性的精選短句）。
 寧可少也不要讓 JSON 不完整被截斷。回傳必須是合法 JSON。
 
 規則：
-- 只取英文（含 ก-ฮ）；忽略中英文歌名／註解
+- words.thai / sentences.thai 都只能是英文（拉丁字母）
 - 中文一律繁體
-- 拼音 thai2english：ก=g、ต=dt、ป=bp、เดิน=dern；à低、â降、á高、ǎ升
+- pinyin 欄位填 IPA 國際音標（用 / / 包圍，重音用 ˈ）
 
 格式（每項只有 thai / pinyin / zh 三欄）：
-{"songName":"完整英文歌曲名稱","artist":"歌手名","words":[{"thai":"","pinyin":"","zh":""}],"sentences":[{"thai":"","pinyin":"","zh":""}]}
+{"songName":"完整英文歌曲名稱","artist":"歌手名","words":[{"thai":"dream","pinyin":"/driːm/","zh":"夢、夢想"}],"sentences":[{"thai":"Don't stop believing.","pinyin":"/doʊnt stɒp bɪˈliːvɪŋ/","zh":"不要停止相信。"}]}
 
 再次強調：不要有「以下是」「我搜尋到」「JSON 如下」這種前言或結語，只回 JSON 物件本身。`
 
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 4096,
-      system: '你是英文歌曲分析助手。你必須只回傳 JSON 格式，絕對不能有任何其他文字、Markdown 標記或解釋。輸出必須直接從 { 開始，到 } 結束。中文用繁體（Traditional Chinese）。拼音照 thai2english.com 標準。',
+      system: '你是英文歌曲分析助手。你必須只回傳 JSON 格式，絕對不能有任何其他文字、Markdown 標記或解釋。輸出必須直接從 { 開始，到 } 結束。中文用繁體（Traditional Chinese）。pinyin 欄位一律使用 IPA 國際音標（用 / / 包圍）。',
       tools: [{ type: 'web_search_20250305', name: 'web_search' }] as any,
       messages: [{ role: 'user', content: prompt }],
     })

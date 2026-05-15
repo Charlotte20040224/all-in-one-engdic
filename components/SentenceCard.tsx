@@ -83,7 +83,7 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
           {/* External links */}
           <div className="flex items-center gap-3 flex-wrap">
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/thai`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -92,7 +92,7 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
             </a>
             {sentence.grammarPattern && (
               <a
-                href={`https://www.youtube.com/results?search_query=${encodeURIComponent('สอน ' + sentence.grammarPattern + ' ภาษาไทย')}`}
+                href={`https://www.youtube.com/results?search_query=${encodeURIComponent('English grammar ' + sentence.grammarPattern + ' explained')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-xs text-red-600 dark:text-red-400 hover:underline"

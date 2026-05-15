@@ -113,7 +113,7 @@ export default function SentenceAddPage() {
             onKeyDown={e => {
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) lookup()
             }}
-            placeholder="例：ฉันกำลังเรียนภาษาไทย 或 我正在學英文"
+            placeholder="例：I am learning English 或 我正在學英文"
             rows={3}
             className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-y"
           />
@@ -166,7 +166,7 @@ export default function SentenceAddPage() {
 
             <div className="flex items-center gap-3 flex-wrap">
               <a
-                href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/thai`}
+                href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/english`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -175,7 +175,7 @@ export default function SentenceAddPage() {
               </a>
               {result.grammarPattern && (
                 <a
-                  href={`https://www.youtube.com/results?search_query=${encodeURIComponent('สอน ' + result.grammarPattern + ' ภาษาไทย')}`}
+                  href={`https://www.youtube.com/results?search_query=${encodeURIComponent('English grammar ' + result.grammarPattern + ' explained')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-xs text-red-600 dark:text-red-400 hover:underline"
