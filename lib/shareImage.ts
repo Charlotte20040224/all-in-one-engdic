@@ -125,11 +125,11 @@ function downloadCanvas(canvas: HTMLCanvasElement, filename: string) {
 
 export interface PatternShareInput {
   keyword: string
-  keywordRomanization: string
+  keywordIpa: string
   patternZh: string
   pattern: string
   explanationZh: string
-  examples: { thai: string; romanization: string; chinese: string }[]
+  examples: { english: string; ipa: string; chinese: string }[]
   id: number
   nameZh: string
 }
@@ -154,10 +154,10 @@ export async function sharePatternImage(p: PatternShareInput): Promise<void> {
   drawLines(d, keywordLines, 160)
   d.cursor += 10
 
-  // Keyword pinyin
+  // Keyword ipa
   ctx.fillStyle = '#7c3aed'
   ctx.font = `600 56px ${TH}`
-  ctx.fillText(p.keywordRomanization, PAD, d.cursor)
+  ctx.fillText(p.keywordIpa, PAD, d.cursor)
   d.cursor += 90
 
   // Pattern formula card
@@ -189,15 +189,15 @@ export async function sharePatternImage(p: PatternShareInput): Promise<void> {
 
   const examples = p.examples.slice(0, 3)
   for (const ex of examples) {
-    // thai
+    // english
     ctx.fillStyle = '#111827'
     ctx.font = `500 44px ${TH}`
-    const thaiLines = wrapLines(ctx, ex.thai, CONTENT_W).slice(0, 2)
+    const thaiLines = wrapLines(ctx, ex.english, CONTENT_W).slice(0, 2)
     drawLines(d, thaiLines, 56)
-    // romanization
+    // ipa
     ctx.fillStyle = '#7c3aed'
     ctx.font = `400 30px ${TH}`
-    ctx.fillText(ex.romanization, PAD, d.cursor)
+    ctx.fillText(ex.ipa, PAD, d.cursor)
     d.cursor += 42
     // chinese
     ctx.fillStyle = '#374151'
@@ -217,11 +217,11 @@ export async function sharePatternImage(p: PatternShareInput): Promise<void> {
 // ──────────────────────────────────────────────────────────────────────────────
 
 export interface WordShareInput {
-  thai: string
-  pinyin: string
+  english: string
+  ipa: string
   pos?: string
   meaning: string
-  example?: { thai: string; pinyin: string; zh: string }
+  example?: { english: string; ipa: string; zh: string }
 }
 
 export async function shareWordImage(w: WordShareInput): Promise<void> {
@@ -236,14 +236,14 @@ export async function shareWordImage(w: WordShareInput): Promise<void> {
   // Thai (huge)
   ctx.fillStyle = '#111827'
   ctx.font = `700 180px ${TH}`
-  const thaiLines = wrapLines(ctx, w.thai, CONTENT_W).slice(0, 2)
+  const thaiLines = wrapLines(ctx, w.english, CONTENT_W).slice(0, 2)
   drawLines(d, thaiLines, 200)
   d.cursor += 20
 
-  // Pinyin
+  // IPA
   ctx.fillStyle = '#7c3aed'
   ctx.font = `600 64px ${TH}`
-  ctx.fillText(w.pinyin, PAD, d.cursor)
+  ctx.fillText(w.ipa, PAD, d.cursor)
   d.cursor += 100
 
   // POS chip
@@ -277,12 +277,12 @@ export async function shareWordImage(w: WordShareInput): Promise<void> {
 
     ctx.fillStyle = '#111827'
     ctx.font = `500 50px ${TH}`
-    const exThai = wrapLines(ctx, w.example.thai, CONTENT_W).slice(0, 3)
+    const exThai = wrapLines(ctx, w.example.english, CONTENT_W).slice(0, 3)
     drawLines(d, exThai, 64)
 
     ctx.fillStyle = '#7c3aed'
     ctx.font = `400 32px ${TH}`
-    ctx.fillText(w.example.pinyin, PAD, d.cursor)
+    ctx.fillText(w.example.ipa, PAD, d.cursor)
     d.cursor += 50
 
     ctx.fillStyle = '#374151'
@@ -293,6 +293,6 @@ export async function shareWordImage(w: WordShareInput): Promise<void> {
 
   drawFooter(ctx)
 
-  const safe = w.thai.replace(/[^\p{L}\p{N}_-]+/gu, '_').slice(0, 20) || 'word'
+  const safe = w.english.replace(/[^\p{L}\p{N}_-]+/gu, '_').slice(0, 20) || 'word'
   downloadCanvas(canvas, `daily-word-${safe}.png`)
 }

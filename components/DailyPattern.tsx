@@ -204,23 +204,23 @@ function PatternView({
           kind="word"
           size="md"
           entry={{
-            thai: p.keyword,
-            romanization: p.keywordRomanization,
+            english: p.keyword,
+            ipa: p.keywordIpa,
             chinese: p.nameZh,
           }}
         />
-        <span data-thai className="text-xl font-bold text-gray-900 dark:text-white">
+        <span data-english className="text-xl font-bold text-gray-900 dark:text-white">
           {p.keyword}
         </span>
-        <span data-pinyin className="text-sm text-purple-600 dark:text-purple-400">
-          {p.keywordRomanization}
+        <span data-ipa className="text-sm text-purple-600 dark:text-purple-400">
+          {p.keywordIpa}
         </span>
       </div>
 
       {/* Pattern formula */}
       <div className="bg-blue-50 dark:bg-blue-900/20 px-3 py-2 rounded text-sm">
         <div className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">📐 句型結構</div>
-        <div className="text-gray-800 dark:text-gray-200" data-thai>{p.pattern}</div>
+        <div className="text-gray-800 dark:text-gray-200" data-english>{p.pattern}</div>
         <div className="text-gray-600 dark:text-gray-400 text-xs mt-0.5">{p.patternZh}</div>
       </div>
 
@@ -270,7 +270,7 @@ function PatternView({
             return (
               <div key={i} className="py-2">
                 <div className="flex items-start gap-2">
-                  <SpeakButton text={ex.thai} size="sm" className="mt-0.5 shrink-0" />
+                  <SpeakButton text={ex.english} size="sm" className="mt-0.5 shrink-0" />
                   <button
                     type="button"
                     onClick={() => hasWords && setExpandedExample(open ? null : i)}
@@ -278,12 +278,12 @@ function PatternView({
                     aria-expanded={open}
                   >
                     <div className="flex items-center gap-1">
-                      <span data-thai className="text-base text-gray-900 dark:text-white">{ex.thai}</span>
+                      <span data-english className="text-base text-gray-900 dark:text-white">{ex.english}</span>
                       {hasWords && (
                         <span className={`text-xs text-gray-400 dark:text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
                       )}
                     </div>
-                    <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{ex.romanization}</div>
+                    <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{ex.ipa}</div>
                     <div className="text-sm text-gray-700 dark:text-gray-300">{ex.chinese}</div>
                   </button>
                 </div>
@@ -291,10 +291,10 @@ function PatternView({
                   <div className="mt-2 ml-8 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded divide-y divide-amber-200 dark:divide-amber-800">
                     {ex.words!.map((w, j) => (
                       <div key={j} className="py-1 first:pt-0 last:pb-0 flex items-start gap-1.5">
-                        <SpeakButton text={w.thai} size="sm" className="mt-0.5 shrink-0" />
+                        <SpeakButton text={w.english} size="sm" className="mt-0.5 shrink-0" />
                         <div>
-                          <div data-thai className="text-sm font-medium text-gray-800 dark:text-gray-200">{w.thai}</div>
-                          <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{w.rom}</div>
+                          <div data-english className="text-sm font-medium text-gray-800 dark:text-gray-200">{w.english}</div>
+                          <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{w.ipa}</div>
                           <div className="text-xs text-amber-700 dark:text-amber-300">{w.zh}</div>
                         </div>
                       </div>
@@ -331,13 +331,13 @@ function PatternView({
                   <span className="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300">女</span>
                 )}
                 <SpeakButton text={p.quiz.blanks.join(' ')} size="sm" />
-                <span data-thai className="text-base font-medium text-gray-900 dark:text-white">
+                <span data-english className="text-base font-medium text-gray-900 dark:text-white">
                   {p.quiz.blanks.join(' ')}
                 </span>
               </div>
-              {p.quiz.blankRomanizations && p.quiz.blankRomanizations.length > 0 && (
-                <div data-pinyin className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
-                  {p.quiz.blankRomanizations.join(' ')}
+              {p.quiz.blankIpas && p.quiz.blankIpas.length > 0 && (
+                <div data-ipa className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
+                  {p.quiz.blankIpas.join(' ')}
                 </div>
               )}
             </div>
@@ -348,13 +348,13 @@ function PatternView({
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">男</span>
                   <SpeakButton text={p.quiz.blanksMale.join(' ')} size="sm" />
-                  <span data-thai className="text-base font-medium text-gray-900 dark:text-white">
+                  <span data-english className="text-base font-medium text-gray-900 dark:text-white">
                     {p.quiz.blanksMale.join(' ')}
                   </span>
                 </div>
-                {p.quiz.blankRomanizationsMale && p.quiz.blankRomanizationsMale.length > 0 && (
-                  <div data-pinyin className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
-                    {p.quiz.blankRomanizationsMale.join(' ')}
+                {p.quiz.blankIpasMale && p.quiz.blankIpasMale.length > 0 && (
+                  <div data-ipa className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
+                    {p.quiz.blankIpasMale.join(' ')}
                   </div>
                 )}
               </div>
@@ -742,13 +742,13 @@ export default function DailyPattern({ isDark, speechRate }: Props) {
                       id: current.id,
                       nameZh: current.nameZh,
                       keyword: current.keyword,
-                      keywordRomanization: current.keywordRomanization,
+                      keywordIpa: current.keywordIpa,
                       pattern: current.pattern,
                       patternZh: current.patternZh,
                       explanationZh: current.explanationZh,
                       examples: current.examples.map(ex => ({
-                        thai: ex.thai,
-                        romanization: ex.romanization,
+                        english: ex.english,
+                        ipa: ex.ipa,
                         chinese: ex.chinese,
                       })),
                     })}

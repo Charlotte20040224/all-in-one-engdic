@@ -39,15 +39,15 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     })
   } else {
     const tooLongStr = findTooLongString({
-      thai: body.thai, pinyin: body.pinyin, zh: body.zh, grammar: body.grammar,
+      english: body.english, ipa: body.ipa, zh: body.zh, grammar: body.grammar,
     })
     if (tooLongStr) return NextResponse.json({ error: `${tooLongStr} too long (max 200)` }, { status: 400 })
 
     const tooLongJ = findTooLongJson({ vocabulary: body.vocabulary })
     if (tooLongJ) return NextResponse.json({ error: `${tooLongJ} too large (max 50000)` }, { status: 400 })
 
-    if (body.thai !== undefined) updateData.thai = body.thai
-    if (body.pinyin !== undefined) updateData.pinyin = body.pinyin
+    if (body.english !== undefined) updateData.english = body.english
+    if (body.ipa !== undefined) updateData.ipa = body.ipa
     if (body.zh !== undefined) updateData.zh = body.zh
     if (body.grammar !== undefined) updateData.grammar = body.grammar
     if (body.vocabulary !== undefined) updateData.vocabulary = body.vocabulary

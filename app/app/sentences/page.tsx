@@ -20,28 +20,28 @@ export default function SentencesPage() {
 
   useEffect(() => {
     setNow(new Date())
-    setFavoriteThai(new Set(readFavorites().map(f => f.thai)))
+    setFavoriteThai(new Set(readFavorites().map(f => f.english)))
     fetch('/api/sentences')
       .then(r => r.json())
       .then(data => {
         setSentences(data)
         setLoading(false)
-        data.slice(0, 5).forEach((s: SentenceEntry) => prefetchAudio(s.thai))
+        data.slice(0, 5).forEach((s: SentenceEntry) => prefetchAudio(s.english))
       })
   }, [])
 
   const filtered = sentences.filter(s => {
     const matchSearch =
       !search ||
-      s.thai.includes(search) ||
+      s.english.includes(search) ||
       s.zh?.toLowerCase().includes(search.toLowerCase()) ||
-      s.pinyin?.toLowerCase().includes(search.toLowerCase())
+      s.ipa?.toLowerCase().includes(search.toLowerCase())
 
     const level = sentenceLevel(s.repetitions, s.interval)
     const matchFilter =
       filter === 'all' ||
       (filter === 'due' && now !== null && new Date(s.nextReview) <= now) ||
-      (filter === 'favorite' && favoriteThai.has(s.thai)) ||
+      (filter === 'favorite' && favoriteThai.has(s.english)) ||
       filter === String(level)
 
     return matchSearch && matchFilter

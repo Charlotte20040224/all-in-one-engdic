@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { SpeakButton } from '@/components/SpeakButton'
-import { ClickableThai } from '@/components/ClickableThai'
+import { ClickableWord } from '@/components/ClickableWord'
 import { ModeTabs } from '@/components/ModeTabs'
 import { prefetchAudio } from '@/lib/tts'
 import { srsLabel, srsColor } from '@/lib/srs'
 import { bumpStudyLog } from '@/lib/studyLog'
-import { getPinyinDisplay, type WordEntry, type WordRef, type VocabItem } from '@/lib/types'
+import { getIpaDisplay, type WordEntry, type WordRef, type VocabItem } from '@/lib/types'
 
 type Rating = 'hard' | 'ok' | 'easy'
 type ReviewMode = 'flip' | 'fill'
@@ -21,9 +21,9 @@ function escapeRegExp(s: string) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function buildBlankedSentence(thai: string, target: string): string {
-  if (!target) return thai
-  return thai.replace(new RegExp(escapeRegExp(target), 'g'), BLANK_PLACEHOLDER)
+function buildBlankedSentence(english: string, target: string): string {
+  if (!target) return english
+  return english.replace(new RegExp(escapeRegExp(target), 'g'), BLANK_PLACEHOLDER)
 }
 
 function normalizeAnswer(s: string): string {
@@ -84,10 +84,10 @@ export default function ReviewPage() {
   useEffect(() => {
     if (!word) return
     const examples = (word.examples as any[]) ?? []
-    prefetchAudio(word.thai)
-    if (examples[0]?.thai) prefetchAudio(examples[0].thai)
+    prefetchAudio(word.english)
+    if (examples[0]?.english) prefetchAudio(examples[0].english)
     const next = queue[current + 1]
-    if (next) prefetchAudio(next.thai)
+    if (next) prefetchAudio(next.english)
   }, [current, queue, word])
 
   const rate = (rating: Rating) => {
@@ -122,9 +122,9 @@ export default function ReviewPage() {
 
   const submitFill = () => {
     if (!word) return
-    const targetExample = (word.examples as any[])?.find(ex => ex?.thai?.includes(word.thai))
+    const targetExample = (word.examples as any[])?.find(ex => ex?.english?.includes(word.english))
     if (!targetExample) return
-    const expected = normalizeAnswer(targetExample.thai)
+    const expected = normalizeAnswer(targetExample.english)
     const got = normalizeAnswer(fillInput)
     setFillResult(got === expected ? 'correct' : 'wrong')
   }
@@ -304,8 +304,8 @@ export default function ReviewPage() {
           {/* Front */}
           <div className="flip-card-front absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center">
             <div className="flex items-center gap-3 mb-3">
-              <span data-thai className="text-4xl font-bold text-gray-900 dark:text-white">{word.thai}</span>
-              <SpeakButton text={word.thai} size="md" />
+              <span data-english className="text-4xl font-bold text-gray-900 dark:text-white">{word.english}</span>
+              <SpeakButton text={word.english} size="md" />
             </div>
             {word.pos && (
               <span className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">
@@ -318,11 +318,11 @@ export default function ReviewPage() {
           {/* Back */}
           <div className="flip-card-back absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-y-auto">
             <div className="flex items-center gap-2 mb-1">
-              <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white">{word.thai}</span>
-              <SpeakButton text={word.thai} size="md" />
+              <span data-english className="text-2xl font-bold text-gray-900 dark:text-white">{word.english}</span>
+              <SpeakButton text={word.english} size="md" />
             </div>
-            <div data-pinyin className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
-              {getPinyinDisplay(word).map((p, i) => (
+            <div data-ipa className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getIpaDisplay(word).map((p, i) => (
                 <span key={i} className="flex items-center gap-1.5">
                   {p.label && <span>{p.label}</span>}
                   <span>{p.ipa}</span>
@@ -334,10 +334,10 @@ export default function ReviewPage() {
             {examples.slice(0, 2).map((ex: any, i: number) => (
               <div key={i} className="mb-3 border-l-2 border-purple-300 dark:border-purple-700 pl-3">
                 <div className="flex items-center gap-2">
-                  <SpeakButton text={ex.thai} />
-                  <span data-thai className="text-sm text-gray-800 dark:text-gray-200">{ex.thai}</span>
+                  <SpeakButton text={ex.english} />
+                  <span data-english className="text-sm text-gray-800 dark:text-gray-200">{ex.english}</span>
                 </div>
-                <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{ex.pinyin}</div>
+                <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{ex.ipa}</div>
                 <div className="text-xs text-gray-600 dark:text-gray-300">{ex.zh}</div>
                 {ex.vocabulary && ex.vocabulary.length > 0 && (
                   <div className="mt-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded">
@@ -345,10 +345,10 @@ export default function ReviewPage() {
                     <div className="divide-y divide-amber-200 dark:divide-amber-800">
                       {ex.vocabulary.map((v: VocabItem, vi: number) => (
                         <div key={vi} className="py-1 first:pt-0 last:pb-0 flex items-start gap-1.5">
-                          <SpeakButton text={v.thai} size="sm" className="mt-0.5 shrink-0" />
+                          <SpeakButton text={v.english} size="sm" className="mt-0.5 shrink-0" />
                           <div>
-                            <ClickableThai text={v.thai} className="text-xs font-medium text-gray-800 dark:text-gray-200" />
-                            <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                            <ClickableWord text={v.english} className="text-xs font-medium text-gray-800 dark:text-gray-200" />
+                            <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{v.ipa}</div>
                             <div className="text-xs text-amber-700 dark:text-amber-300">{v.meaning}</div>
                           </div>
                         </div>
@@ -364,14 +364,14 @@ export default function ReviewPage() {
               </div>
             ))}
 
-            {collocations.filter((c: WordRef) => c.thai).length > 0 && (
+            {collocations.filter((c: WordRef) => c.english).length > 0 && (
               <div className="mb-2">
                 <span className="text-xs font-semibold text-gray-400">搭配詞：</span>
                 <div className="flex flex-wrap gap-1 mt-1">
-                  {collocations.filter((c: WordRef) => c.thai).map((c: WordRef, i: number) => (
+                  {collocations.filter((c: WordRef) => c.english).map((c: WordRef, i: number) => (
                     <div key={i} className="flex items-center gap-1">
-                      <SpeakButton text={c.thai} />
-                      <span data-thai className="text-xs bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">{c.thai}</span>
+                      <SpeakButton text={c.english} />
+                      <span data-english className="text-xs bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded">{c.english}</span>
                     </div>
                   ))}
                 </div>
@@ -383,7 +383,7 @@ export default function ReviewPage() {
             )}
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/english`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(word.english)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}
@@ -398,7 +398,7 @@ export default function ReviewPage() {
 
       {/* Fill-in-the-blank mode */}
       {mode === 'fill' && (() => {
-        const targetExample = (word.examples as any[])?.find(ex => ex?.thai?.includes(word.thai))
+        const targetExample = (word.examples as any[])?.find(ex => ex?.english?.includes(word.english))
         if (!targetExample) {
           return (
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 text-center">
@@ -413,11 +413,11 @@ export default function ReviewPage() {
             </div>
           )
         }
-        const blanked = buildBlankedSentence(targetExample.thai, word.thai)
+        const blanked = buildBlankedSentence(targetExample.english, word.english)
         return (
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 space-y-4">
             <div className="text-xs text-gray-500 dark:text-gray-400">把空格填回去，輸入完整的英文句子</div>
-            <div className="text-lg font-medium text-gray-900 dark:text-white" data-thai>
+            <div className="text-lg font-medium text-gray-900 dark:text-white" data-english>
               {blanked}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-300">{targetExample.zh}</div>
@@ -428,7 +428,7 @@ export default function ReviewPage() {
               onKeyDown={e => e.key === 'Enter' && fillResult !== 'correct' && submitFill()}
               placeholder="輸入完整英文…"
               disabled={fillResult === 'correct'}
-              data-thai
+              data-english
               className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-60"
             />
             {fillResult === null && (
@@ -443,13 +443,13 @@ export default function ReviewPage() {
             )}
             {fillResult === 'correct' && (
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 text-sm text-green-700 dark:text-green-300">
-                ✅ 答對了！正確答案：<span data-thai className="font-medium">{targetExample.thai}</span>
+                ✅ 答對了！正確答案：<span data-english className="font-medium">{targetExample.english}</span>
               </div>
             )}
             {fillResult === 'wrong' && (
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-300 space-y-2">
                 <div>
-                  ❌ 答錯了，正確答案：<span data-thai className="font-medium">{targetExample.thai}</span>
+                  ❌ 答錯了，正確答案：<span data-english className="font-medium">{targetExample.english}</span>
                 </div>
                 <button
                   type="button"

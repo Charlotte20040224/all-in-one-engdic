@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { SpeakButton } from '@/components/SpeakButton'
-import { ClickableThai } from '@/components/ClickableThai'
+import { ClickableWord } from '@/components/ClickableWord'
 import { ModeTabs } from '@/components/ModeTabs'
-import { getPinyinDisplay, type SentenceLookupResult } from '@/lib/types'
+import { getIpaDisplay, type SentenceLookupResult } from '@/lib/types'
 
 export default function SentenceAddPage() {
   const [query, setQuery] = useState('')
@@ -131,13 +131,13 @@ export default function SentenceAddPage() {
         <>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-4">
             <div className="flex items-start gap-3">
-              <SpeakButton text={result.thai} size="md" />
-              <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white break-words">
-                {result.thai}
+              <SpeakButton text={result.english} size="md" />
+              <span data-english className="text-2xl font-bold text-gray-900 dark:text-white break-words">
+                {result.english}
               </span>
             </div>
-            <div data-pinyin className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-              {getPinyinDisplay(result).map((p, i) => (
+            <div data-ipa className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getIpaDisplay(result).map((p, i) => (
                 <span key={i} className="flex items-center gap-1.5">
                   {p.label && <span className="text-base">{p.label}</span>}
                   <span>{p.ipa}</span>
@@ -159,10 +159,10 @@ export default function SentenceAddPage() {
                 <div className="bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded divide-y divide-amber-200 dark:divide-amber-800">
                   {vocabulary.map((v, i) => (
                     <div key={i} className="py-1 first:pt-0 last:pb-0 flex items-start gap-1.5">
-                      <SpeakButton text={v.thai} size="sm" className="mt-0.5 shrink-0" />
+                      <SpeakButton text={v.english} size="sm" className="mt-0.5 shrink-0" />
                       <div>
-                        <ClickableThai text={v.thai} className="text-sm font-medium text-gray-800 dark:text-gray-200" />
-                        <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                        <ClickableWord text={v.english} className="text-sm font-medium text-gray-800 dark:text-gray-200" />
+                        <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{v.ipa}</div>
                         <div className="text-xs text-amber-700 dark:text-amber-300">{v.meaning}</div>
                       </div>
                     </div>
@@ -173,7 +173,7 @@ export default function SentenceAddPage() {
 
             <div className="flex items-center gap-3 flex-wrap">
               <a
-                href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/english`}
+                href={`https://youglish.com/pronounce/${encodeURIComponent(result.english)}/english`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"

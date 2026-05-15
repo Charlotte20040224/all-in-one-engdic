@@ -16,12 +16,12 @@
   }
 }
 
-.font-decorative [data-thai],
+.font-decorative [data-english],
 .font-decorative [lang="th"] {
-  font-family: var(--thai-font);
+  font-family: var(--english-font);
 }
 
-body.hide-pinyin [data-pinyin] {
+body.hide-ipa [data-ipa] {
   visibility: hidden;
 }
 

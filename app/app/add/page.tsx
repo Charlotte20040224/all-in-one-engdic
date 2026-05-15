@@ -4,13 +4,13 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { SpeakButton } from '@/components/SpeakButton'
 import { FavoriteButton } from '@/components/FavoriteButton'
-import { ClickableThai } from '@/components/ClickableThai'
+import { ClickableWord } from '@/components/ClickableWord'
 import { ModeTabs } from '@/components/ModeTabs'
 import { ShareButton } from '@/components/ShareButton'
 import { grammarPatterns, type GrammarPattern } from '@/data/grammarPatterns'
 import { bumpStudyLog } from '@/lib/studyLog'
 import { shareWordImage } from '@/lib/shareImage'
-import { getPinyinDisplay, type LookupResult } from '@/lib/types'
+import { getIpaDisplay, type LookupResult } from '@/lib/types'
 
 type LookupMode = 'quick' | 'full'
 
@@ -20,7 +20,7 @@ const SEARCH_HISTORY_LIMIT = 50
 interface SearchHistoryEntry {
   query: string
   timestamp: number
-  result: { thai: string; romanization: string; chinese: string }
+  result: { english: string; ipa: string; chinese: string }
 }
 
 function readSearchHistory(): SearchHistoryEntry[] {
@@ -85,7 +85,7 @@ function AddPageInner() {
     const entry: SearchHistoryEntry = {
       query: q,
       timestamp: Date.now(),
-      result: { thai: r.thai, romanization: r.pinyin ?? '', chinese: r.meaning ?? '' },
+      result: { english: r.english, ipa: r.ipa ?? '', chinese: r.meaning ?? '' },
     }
     setHistory(prev => {
       const filtered = prev.filter(e => e.query !== q)
@@ -195,11 +195,11 @@ function AddPageInner() {
     }
   }
 
-  const collocations = result?.collocations?.filter(c => c.thai) ?? []
-  const synonyms    = result?.synonyms?.filter(s => s.thai) ?? []
-  const antonyms    = result?.antonyms?.filter(a => a.thai) ?? []
-  const related     = result?.related?.filter(r => r.thai) ?? []
-  const variants    = result?.variants?.filter(v => v.thai) ?? []
+  const collocations = result?.collocations?.filter(c => c.english) ?? []
+  const synonyms    = result?.synonyms?.filter(s => s.english) ?? []
+  const antonyms    = result?.antonyms?.filter(a => a.english) ?? []
+  const related     = result?.related?.filter(r => r.english) ?? []
+  const variants    = result?.variants?.filter(v => v.english) ?? []
 
   const frequencyBadge: Record<string, string> = {
     '最常用': 'bg-green-100 text-green-700',
@@ -290,9 +290,9 @@ function AddPageInner() {
                     className="flex-1 min-w-0 text-left"
                   >
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span data-thai className="text-sm font-medium text-gray-900 dark:text-white">{entry.result.thai}</span>
-                      {entry.result.romanization && (
-                        <span data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{entry.result.romanization}</span>
+                      <span data-english className="text-sm font-medium text-gray-900 dark:text-white">{entry.result.english}</span>
+                      {entry.result.ipa && (
+                        <span data-ipa className="text-xs text-purple-600 dark:text-purple-400">{entry.result.ipa}</span>
                       )}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-300 truncate">{entry.result.chinese}</div>
@@ -325,20 +325,20 @@ function AddPageInner() {
         <>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-4">
             <div className="flex items-center gap-3">
-              <span data-thai className="text-3xl font-bold text-gray-900 dark:text-white">{result.thai}</span>
-              <SpeakButton text={result.thai} size="md" />
+              <span data-english className="text-3xl font-bold text-gray-900 dark:text-white">{result.english}</span>
+              <SpeakButton text={result.english} size="md" />
               <FavoriteButton
                 kind="word"
                 size="md"
                 entry={{
-                  thai: result.thai,
-                  romanization: result.pinyin,
+                  english: result.english,
+                  ipa: result.ipa,
                   chinese: result.meaning,
                 }}
               />
             </div>
-            <div data-pinyin className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-              {getPinyinDisplay(result).map((p, i) => (
+            <div data-ipa className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getIpaDisplay(result).map((p, i) => (
                 <span key={i} className="flex items-center gap-1.5">
                   {p.label && <span className="text-base">{p.label}</span>}
                   <span>{p.ipa}</span>
@@ -357,10 +357,10 @@ function AddPageInner() {
                   {result.examples.map((ex, i) => (
                     <div key={i} className="border-l-2 border-purple-300 dark:border-purple-700 pl-3">
                       <div className="flex items-center gap-2">
-                        <SpeakButton text={ex.thai} />
-                        <span data-thai className="text-sm text-gray-800 dark:text-gray-200">{ex.thai}</span>
+                        <SpeakButton text={ex.english} />
+                        <span data-english className="text-sm text-gray-800 dark:text-gray-200">{ex.english}</span>
                       </div>
-                      <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{ex.pinyin}</div>
+                      <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{ex.ipa}</div>
                       <div className="text-xs text-gray-600 dark:text-gray-300">{ex.zh}</div>
                       {ex.vocabulary && ex.vocabulary.length > 0 && (
                         <div className="mt-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded">
@@ -368,10 +368,10 @@ function AddPageInner() {
                           <div className="divide-y divide-amber-200 dark:divide-amber-800">
                             {ex.vocabulary.map((v, vi) => (
                               <div key={vi} className="py-1 first:pt-0 last:pb-0 flex items-start gap-1.5">
-                                <SpeakButton text={v.thai} size="sm" className="mt-0.5 shrink-0" />
+                                <SpeakButton text={v.english} size="sm" className="mt-0.5 shrink-0" />
                                 <div>
-                                  <ClickableThai text={v.thai} className="text-xs font-medium text-gray-800 dark:text-gray-200" />
-                                  <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                                  <ClickableWord text={v.english} className="text-xs font-medium text-gray-800 dark:text-gray-200" />
+                                  <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{v.ipa}</div>
                                   <div className="text-xs text-amber-700 dark:text-amber-300">{v.meaning}</div>
                                 </div>
                               </div>
@@ -396,10 +396,10 @@ function AddPageInner() {
                 <div className="space-y-2">
                   {collocations.map((c, i) => (
                     <div key={i} className="flex items-start gap-2 text-sm">
-                      <SpeakButton text={c.thai} className="mt-0.5 shrink-0" />
+                      <SpeakButton text={c.english} className="mt-0.5 shrink-0" />
                       <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 min-w-0 flex-1">
-                        <span data-thai className="text-gray-800 dark:text-gray-200 break-words">{c.thai}</span>
-                        <span data-pinyin className="text-gray-500 break-words">{c.pinyin}</span>
+                        <span data-english className="text-gray-800 dark:text-gray-200 break-words">{c.english}</span>
+                        <span data-ipa className="text-gray-500 break-words">{c.ipa}</span>
                         <span className="text-gray-600 dark:text-gray-300 break-words">
                           <span className="hidden sm:inline">— </span>{c.zh}
                         </span>
@@ -435,11 +435,11 @@ function AddPageInner() {
                   {variants.map((v, i) => (
                     <div key={i} className="flex flex-col gap-0.5 border-l-2 border-indigo-300 dark:border-indigo-700 pl-3">
                       <div className="flex items-center gap-2">
-                        <SpeakButton text={v.thai} />
-                        <span data-thai className="text-lg font-bold text-gray-900 dark:text-white">{v.thai}</span>
+                        <SpeakButton text={v.english} />
+                        <span data-english className="text-lg font-bold text-gray-900 dark:text-white">{v.english}</span>
                         <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${frequencyBadge[v.frequency] ?? frequencyBadge['較少用']}`}>{v.frequency}</span>
                       </div>
-                      <div data-pinyin className="text-sm text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                      <div data-ipa className="text-sm text-orange-500 dark:text-orange-400">{v.ipa}</div>
                       <div className="text-sm text-gray-700 dark:text-gray-300">{v.meaning}</div>
                       {v.context && <div className="text-xs text-gray-400">{v.context}</div>}
                     </div>
@@ -448,10 +448,10 @@ function AddPageInner() {
               </div>
             )}
 
-            <RelatedPatterns thai={result.thai} />
+            <RelatedPatterns english={result.english} />
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(result.thai)}/english`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(result.english)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -489,14 +489,14 @@ function AddPageInner() {
                 label="分享到 IG"
                 variant="subtle"
                 onShare={() => shareWordImage({
-                  thai: result.thai,
-                  pinyin: result.pinyin,
+                  english: result.english,
+                  ipa: result.ipa,
                   pos: result.pos,
                   meaning: result.meaning,
                   example: result.examples?.[0]
                     ? {
-                        thai: result.examples[0].thai,
-                        pinyin: result.examples[0].pinyin,
+                        english: result.examples[0].english,
+                        ipa: result.examples[0].ipa,
                         zh: result.examples[0].zh,
                       }
                     : undefined,
@@ -516,8 +516,8 @@ function RelatedWordList({
   onLookup,
 }: {
   title: string
-  items: { thai: string; pinyin: string; zh: string }[]
-  onLookup: (thai: string) => void
+  items: { english: string; ipa: string; zh: string }[]
+  onLookup: (english: string) => void
 }) {
   return (
     <div>
@@ -527,16 +527,16 @@ function RelatedWordList({
           const zh = (item.zh ?? '').trim()
           return (
             <div key={i} className="flex items-start gap-2 text-sm">
-              <SpeakButton text={item.thai} className="mt-0.5 shrink-0" />
+              <SpeakButton text={item.english} className="mt-0.5 shrink-0" />
               <button
                 type="button"
-                onClick={() => onLookup(item.thai)}
-                title={`查詢「${item.thai}」`}
+                onClick={() => onLookup(item.english)}
+                title={`查詢「${item.english}」`}
                 className="flex flex-col sm:flex-row sm:items-center sm:gap-2 min-w-0 flex-1 text-left rounded -mx-1 px-1 py-0.5 hover:bg-purple-50 dark:hover:bg-purple-900/20 transition"
               >
-                <span data-thai className="text-purple-700 dark:text-purple-300 break-words underline-offset-2 hover:underline">{item.thai}</span>
-                {item.pinyin && (
-                  <span data-pinyin className="text-gray-500 break-words">{item.pinyin}</span>
+                <span data-english className="text-purple-700 dark:text-purple-300 break-words underline-offset-2 hover:underline">{item.english}</span>
+                {item.ipa && (
+                  <span data-ipa className="text-gray-500 break-words">{item.ipa}</span>
                 )}
                 {zh && (
                   <span className="text-gray-600 dark:text-gray-300 break-words">
@@ -552,9 +552,9 @@ function RelatedWordList({
   )
 }
 
-function RelatedPatterns({ thai }: { thai: string }) {
+function RelatedPatterns({ english }: { english: string }) {
   const [openIdx, setOpenIdx] = useState<number | null>(null)
-  const matches = useRelatedPatterns(thai)
+  const matches = useRelatedPatterns(english)
 
   if (matches.length === 0) return null
 
@@ -564,7 +564,7 @@ function RelatedPatterns({ thai }: { thai: string }) {
       <div className="space-y-2">
         {matches.map((p, i) => {
           const open = openIdx === i
-          const matchingExamples = p.examples.filter(ex => ex.thai.includes(thai))
+          const matchingExamples = p.examples.filter(ex => ex.english.includes(english))
           return (
             <div key={p.id} className="bg-blue-50 dark:bg-blue-900/20 rounded">
               <button
@@ -580,16 +580,16 @@ function RelatedPatterns({ thai }: { thai: string }) {
               </button>
               {open && (
                 <div className="px-3 pb-3 space-y-2">
-                  <div className="text-xs text-gray-600 dark:text-gray-400" data-thai>
+                  <div className="text-xs text-gray-600 dark:text-gray-400" data-english>
                     句型結構：{p.pattern}
                   </div>
                   {matchingExamples.map((ex, ei) => (
                     <div key={ei} className="border-l-2 border-blue-300 dark:border-blue-700 pl-2">
                       <div className="flex items-center gap-2">
-                        <SpeakButton text={ex.thai} size="sm" />
-                        <span data-thai className="text-sm text-gray-800 dark:text-gray-200">{ex.thai}</span>
+                        <SpeakButton text={ex.english} size="sm" />
+                        <span data-english className="text-sm text-gray-800 dark:text-gray-200">{ex.english}</span>
                       </div>
-                      <div data-pinyin className="text-xs text-gray-500 dark:text-gray-400">{ex.romanization}</div>
+                      <div data-ipa className="text-xs text-gray-500 dark:text-gray-400">{ex.ipa}</div>
                       <div className="text-xs text-gray-700 dark:text-gray-300">{ex.chinese}</div>
                     </div>
                   ))}
@@ -603,11 +603,11 @@ function RelatedPatterns({ thai }: { thai: string }) {
   )
 }
 
-function useRelatedPatterns(thai: string): GrammarPattern[] {
-  if (!thai) return []
+function useRelatedPatterns(english: string): GrammarPattern[] {
+  if (!english) return []
   const out: GrammarPattern[] = []
   for (const p of grammarPatterns) {
-    if (p.examples.some(ex => ex.thai.includes(thai))) {
+    if (p.examples.some(ex => ex.english.includes(english))) {
       out.push(p)
       if (out.length >= 3) break
     }

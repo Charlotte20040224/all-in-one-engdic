@@ -1,10 +1,10 @@
 'use client'
 
-import { SentenceEntry, VocabItem, getPinyinDisplay } from '@/lib/types'
+import { SentenceEntry, VocabItem, getIpaDisplay } from '@/lib/types'
 import { sentenceLevel, sentenceLevelLabel, sentenceLevelColor } from '@/lib/sentenceSrs'
 import { SpeakButton } from './SpeakButton'
 import { FavoriteButton } from './FavoriteButton'
-import { ClickableThai } from './ClickableThai'
+import { ClickableWord } from './ClickableWord'
 import { isFavorited } from '@/lib/favorites'
 
 interface Props {
@@ -23,23 +23,23 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <SpeakButton text={sentence.thai} size="md" />
+            <SpeakButton text={sentence.english} size="md" />
             <FavoriteButton
               kind="sentence"
               size="md"
               entry={{
-                thai: sentence.thai,
-                romanization: sentence.pinyin,
+                english: sentence.english,
+                ipa: sentence.ipa,
                 chinese: sentence.zh,
                 source: '句子庫',
               }}
             />
-            <span data-thai className="text-xl font-bold text-gray-900 dark:text-white break-words">
-              {sentence.thai}
+            <span data-english className="text-xl font-bold text-gray-900 dark:text-white break-words">
+              {sentence.english}
             </span>
           </div>
-          <div data-pinyin className="mt-1 text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-            {getPinyinDisplay(sentence).map((p, i) => (
+          <div data-ipa className="mt-1 text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {getIpaDisplay(sentence).map((p, i) => (
               <span key={i} className="flex items-center gap-1.5">
                 {p.label && <span>{p.label}</span>}
                 <span>{p.ipa}</span>
@@ -49,7 +49,7 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
           <div className="text-gray-700 dark:text-gray-300 mt-1">{sentence.zh}</div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
-          {isFavorited(sentence.thai) && (
+          {isFavorited(sentence.english) && (
             <span title="已收藏" className="text-base">❤️</span>
           )}
           <span className={`text-xs px-2 py-1 rounded-full font-medium ${sentenceLevelColor(level)}`}>
@@ -75,10 +75,10 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
               <div className="bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded divide-y divide-amber-200 dark:divide-amber-800">
                 {vocabulary.map((v: VocabItem, i: number) => (
                   <div key={i} className="py-1 first:pt-0 last:pb-0 flex items-start gap-1.5">
-                    <SpeakButton text={v.thai} size="sm" className="mt-0.5 shrink-0" />
+                    <SpeakButton text={v.english} size="sm" className="mt-0.5 shrink-0" />
                     <div>
-                      <ClickableThai text={v.thai} className="text-sm font-medium text-gray-800 dark:text-gray-200" />
-                      <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                      <ClickableWord text={v.english} className="text-sm font-medium text-gray-800 dark:text-gray-200" />
+                      <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{v.ipa}</div>
                       <div className="text-xs text-amber-700 dark:text-amber-300">{v.meaning}</div>
                     </div>
                   </div>
@@ -90,7 +90,7 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
           {/* External links */}
           <div className="flex items-center gap-3 flex-wrap">
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/english`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.english)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"

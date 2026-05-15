@@ -34,8 +34,8 @@ export function FavoriteButton(props: Props) {
   const [active, setActive] = useState(false)
 
   useEffect(() => {
-    setActive(kind === 'word' ? isFavoritedWord(entry.thai) : isFavorited(entry.thai))
-  }, [entry.thai, kind])
+    setActive(kind === 'word' ? isFavoritedWord(entry.english) : isFavorited(entry.english))
+  }, [entry.english, kind])
 
   const handle = (e: React.MouseEvent) => {
     e.stopPropagation()

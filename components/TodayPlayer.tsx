@@ -56,7 +56,7 @@ export function TodayPlayer({ words, onClose }: Props) {
     for (let i = startIdx; i < words.length; i++) {
       if (myRun !== runIdRef.current) return
       setIndex(i)
-      try { await speakThai(words[i].thai) } catch { /* ignore */ }
+      try { await speakThai(words[i].english) } catch { /* ignore */ }
       if (myRun !== runIdRef.current) return
       await delay(PAUSE_AFTER_THAI_MS)
       if (myRun !== runIdRef.current) return
@@ -157,11 +157,11 @@ export function TodayPlayer({ words, onClose }: Props) {
 
         {!done && current && (
           <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 text-center space-y-2 min-h-[180px] flex flex-col justify-center">
-            <div data-thai className="text-4xl font-bold text-gray-900 dark:text-white break-words">
-              {current.thai}
+            <div data-english className="text-4xl font-bold text-gray-900 dark:text-white break-words">
+              {current.english}
             </div>
-            {current.pinyin && (
-              <div data-pinyin className="text-purple-600 dark:text-purple-400">{current.pinyin}</div>
+            {current.ipa && (
+              <div data-ipa className="text-purple-600 dark:text-purple-400">{current.ipa}</div>
             )}
             {current.pos && (
               <span className="inline-block text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">

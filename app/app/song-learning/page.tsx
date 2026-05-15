@@ -4,14 +4,14 @@ import { useEffect, useRef, useState } from 'react'
 import { SpeakButton } from '@/components/SpeakButton'
 
 interface SongWord {
-  thai: string
-  pinyin: string
+  english: string
+  ipa: string
   zh: string
 }
 
 interface SongSentence {
-  thai: string
-  pinyin: string
+  english: string
+  ipa: string
   zh: string
 }
 
@@ -98,8 +98,8 @@ export default function SongLearningPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              thai: w.thai,
-              pinyin: w.pinyin ?? null,
+              english: w.english,
+              ipa: w.ipa ?? null,
               meaning: w.zh ?? null,
               note: result.songName ? `來自歌曲：${result.songName}` : null,
             }),
@@ -128,8 +128,8 @@ export default function SongLearningPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              thai: s.thai,
-              pinyin: s.pinyin,
+              english: s.english,
+              ipa: s.ipa,
               zh: s.zh,
               grammar: result.songName ? `來自歌曲：${result.songName}` : null,
             }),
@@ -202,7 +202,7 @@ export default function SongLearningPage() {
         <>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-3">
             <div>
-              <div data-thai className="text-xl font-bold text-gray-900 dark:text-white break-words">
+              <div data-english className="text-xl font-bold text-gray-900 dark:text-white break-words">
                 {result.songName}
               </div>
               {result.artist && (
@@ -273,10 +273,10 @@ export default function SongLearningPage() {
                             }}
                             className="mt-1 w-4 h-4 accent-purple-600 cursor-pointer"
                           />
-                          <SpeakButton text={w.thai} size="sm" className="mt-0.5 shrink-0" />
+                          <SpeakButton text={w.english} size="sm" className="mt-0.5 shrink-0" />
                           <div className="flex-1 min-w-0">
-                            <div data-thai className="font-medium text-gray-900 dark:text-white break-words">{w.thai}</div>
-                            <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{w.pinyin}</div>
+                            <div data-english className="font-medium text-gray-900 dark:text-white break-words">{w.english}</div>
+                            <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{w.ipa}</div>
                             <div className="text-sm text-gray-700 dark:text-gray-300">{w.zh}</div>
                           </div>
                         </label>
@@ -321,10 +321,10 @@ export default function SongLearningPage() {
                             }}
                             className="mt-1 w-4 h-4 accent-purple-600 cursor-pointer"
                           />
-                          <SpeakButton text={s.thai} size="sm" className="mt-0.5 shrink-0" />
+                          <SpeakButton text={s.english} size="sm" className="mt-0.5 shrink-0" />
                           <div className="flex-1 min-w-0">
-                            <div data-thai className="font-medium text-gray-900 dark:text-white break-words">{s.thai}</div>
-                            <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400">{s.pinyin}</div>
+                            <div data-english className="font-medium text-gray-900 dark:text-white break-words">{s.english}</div>
+                            <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{s.ipa}</div>
                             <div className="text-sm text-gray-700 dark:text-gray-300">{s.zh}</div>
                           </div>
                         </label>

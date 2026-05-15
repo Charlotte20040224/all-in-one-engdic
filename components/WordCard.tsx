@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { WordEntry, WordRef, Variant, VocabItem, getPinyinDisplay } from '@/lib/types'
+import { WordEntry, WordRef, Variant, VocabItem, getIpaDisplay } from '@/lib/types'
 import { srsLabel, srsColor } from '@/lib/srs'
 import { SpeakButton } from './SpeakButton'
 import { FavoriteButton } from './FavoriteButton'
@@ -23,7 +23,7 @@ function renderNote(note: string): React.ReactNode {
         if (m) {
           return (
             <span key={i}>
-              <span data-thai className="font-medium text-gray-800 dark:text-gray-200">{m[1]}</span>
+              <span data-english className="font-medium text-gray-800 dark:text-gray-200">{m[1]}</span>
               <span className="text-orange-500 dark:text-orange-400 text-xs">（{m[2]}）</span>
             </span>
           )
@@ -37,10 +37,10 @@ function renderNote(note: string): React.ReactNode {
 function WordRefRow({ item }: { item: WordRef }) {
   return (
     <div className="flex items-start gap-2 text-sm">
-      <SpeakButton text={item.thai} className="mt-0.5 shrink-0" />
+      <SpeakButton text={item.english} className="mt-0.5 shrink-0" />
       <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 min-w-0 flex-1">
-        <span data-thai className="font-medium text-gray-800 dark:text-gray-200 break-words">{item.thai}</span>
-        <span data-pinyin className="text-gray-500 dark:text-gray-400 break-words">{item.pinyin}</span>
+        <span data-english className="font-medium text-gray-800 dark:text-gray-200 break-words">{item.english}</span>
+        <span data-ipa className="text-gray-500 dark:text-gray-400 break-words">{item.ipa}</span>
         <span className="text-gray-600 dark:text-gray-300 break-words">
           <span className="hidden sm:inline">— </span>{item.zh}
         </span>
@@ -102,10 +102,10 @@ function ExampleRow({ ex }: { ex: any }) {
   return (
     <div className="border-l-2 border-purple-300 dark:border-purple-700 pl-3">
       <div className="flex items-center gap-2">
-        <SpeakButton text={ex.thai} />
-        <span data-thai className="text-gray-800 dark:text-gray-200">{ex.thai}</span>
+        <SpeakButton text={ex.english} />
+        <span data-english className="text-gray-800 dark:text-gray-200">{ex.english}</span>
       </div>
-      <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400">{ex.pinyin}</div>
+      <div data-ipa className="text-sm text-purple-600 dark:text-purple-400">{ex.ipa}</div>
       <div className="text-sm text-gray-600 dark:text-gray-300">{ex.zh}</div>
       {vocab.length > 0 && (
         <div className="mt-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded">
@@ -122,8 +122,8 @@ function ExampleRow({ ex }: { ex: any }) {
             <div className="mt-1 divide-y divide-amber-200 dark:divide-amber-800">
               {vocab.map((v, vi) => (
                 <div key={vi} className="py-1 first:pt-0 last:pb-0 flex items-baseline gap-3 text-xs">
-                  <span data-thai className="font-medium text-gray-800 dark:text-gray-200">{v.thai}</span>
-                  <span data-pinyin className="text-orange-500 dark:text-orange-400">{v.pinyin}</span>
+                  <span data-english className="font-medium text-gray-800 dark:text-gray-200">{v.english}</span>
+                  <span data-ipa className="text-orange-500 dark:text-orange-400">{v.ipa}</span>
                   <span className="text-amber-700 dark:text-amber-300">{v.meaning}</span>
                 </div>
               ))}
@@ -146,7 +146,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
   const synonyms = (word.synonyms as any[]) ?? []
   const antonyms = (word.antonyms as any[]) ?? []
   const related  = ((word as any).related as any[]) ?? []
-  const variants = ((word.variants as any[]) ?? []).filter((v: any) => v?.thai)
+  const variants = ((word.variants as any[]) ?? []).filter((v: any) => v?.english)
 
   const [note, setNote] = useState(word.note ?? '')
   const [editingNote, setEditingNote] = useState(false)
@@ -211,20 +211,20 @@ export function WordCard({ word, onDelete, compact }: Props) {
       >
         <div className="min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white">{word.thai}</span>
-            <SpeakButton text={word.thai} size="md" />
+            <span data-english className="text-2xl font-bold text-gray-900 dark:text-white">{word.english}</span>
+            <SpeakButton text={word.english} size="md" />
             <FavoriteButton
               kind="word"
               size="md"
               entry={{
-                thai: word.thai,
-                romanization: word.pinyin ?? undefined,
+                english: word.english,
+                ipa: word.ipa ?? undefined,
                 chinese: word.meaning ?? undefined,
               }}
             />
           </div>
-          <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-            {getPinyinDisplay(word).map((p, i) => (
+          <div data-ipa className="text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {getIpaDisplay(word).map((p, i) => (
               <span key={i} className="flex items-center gap-1.5">
                 {p.label && <span>{p.label}</span>}
                 <span>{p.ipa}</span>
@@ -241,7 +241,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
           )}
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
-          {isFavoritedWord(word.thai) && (
+          {isFavoritedWord(word.english) && (
             <span title="已收藏" className="text-base">❤️</span>
           )}
           <span className={`text-xs px-2 py-1 rounded-full font-medium ${srsColor(word.srsLevel)}`}>
@@ -276,37 +276,37 @@ export function WordCard({ word, onDelete, compact }: Props) {
           )}
 
           {/* Collocations */}
-          {collocations.filter(c => c.thai).length > 0 && (
+          {collocations.filter(c => c.english).length > 0 && (
             <CollapsibleSection storageKey="collocations" title="搭配詞">
               <div className="space-y-2">
-                {collocations.filter(c => c.thai).map((c, i) => <WordRefRow key={i} item={c} />)}
+                {collocations.filter(c => c.english).map((c, i) => <WordRefRow key={i} item={c} />)}
               </div>
             </CollapsibleSection>
           )}
 
           {/* Synonyms */}
-          {synonyms.filter(s => s.thai).length > 0 && (
+          {synonyms.filter(s => s.english).length > 0 && (
             <CollapsibleSection storageKey="synonyms" title="近義詞">
               <div className="space-y-2">
-                {synonyms.filter(s => s.thai).map((s, i) => <WordRefRow key={i} item={s} />)}
+                {synonyms.filter(s => s.english).map((s, i) => <WordRefRow key={i} item={s} />)}
               </div>
             </CollapsibleSection>
           )}
 
           {/* Antonyms */}
-          {antonyms.filter(a => a.thai).length > 0 && (
+          {antonyms.filter(a => a.english).length > 0 && (
             <CollapsibleSection storageKey="antonyms" title="反義詞">
               <div className="space-y-2">
-                {antonyms.filter(a => a.thai).map((a, i) => <WordRefRow key={i} item={a} />)}
+                {antonyms.filter(a => a.english).map((a, i) => <WordRefRow key={i} item={a} />)}
               </div>
             </CollapsibleSection>
           )}
 
           {/* Related (same-family) */}
-          {related.filter(r => r?.thai).length > 0 && (
+          {related.filter(r => r?.english).length > 0 && (
             <CollapsibleSection storageKey="related" title="同家族詞">
               <div className="space-y-2">
-                {related.filter(r => r?.thai).map((r, i) => <WordRefRow key={i} item={r} />)}
+                {related.filter(r => r?.english).map((r, i) => <WordRefRow key={i} item={r} />)}
               </div>
             </CollapsibleSection>
           )}
@@ -318,11 +318,11 @@ export function WordCard({ word, onDelete, compact }: Props) {
                 {variants.map((v: Variant, i: number) => (
                   <div key={i} className="flex flex-col gap-0.5 border-l-2 border-indigo-300 dark:border-indigo-700 pl-3">
                     <div className="flex items-center gap-2">
-                      <SpeakButton text={v.thai} />
-                      <span data-thai className="text-lg font-bold text-gray-900 dark:text-white">{v.thai}</span>
+                      <SpeakButton text={v.english} />
+                      <span data-english className="text-lg font-bold text-gray-900 dark:text-white">{v.english}</span>
                       <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${frequencyBadge[v.frequency] ?? frequencyBadge['較少用']}`}>{v.frequency}</span>
                     </div>
-                    <div data-pinyin className="text-sm text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                    <div data-ipa className="text-sm text-orange-500 dark:text-orange-400">{v.ipa}</div>
                     <div className="text-sm text-gray-700 dark:text-gray-300">{v.meaning}</div>
                     {v.context && <div className="text-xs text-gray-400 dark:text-gray-500">{v.context}</div>}
                   </div>
@@ -334,7 +334,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
           {/* External links */}
           <div className="flex items-center gap-3 flex-wrap">
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(word.thai)}/english`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(word.english)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
@@ -342,7 +342,7 @@ export function WordCard({ word, onDelete, compact }: Props) {
               🎬 在 YouGlish 聽真實發音
             </a>
             <a
-              href={`https://www.youtube.com/results?search_query=${encodeURIComponent('English vocabulary ' + word.thai + ' meaning')}`}
+              href={`https://www.youtube.com/results?search_query=${encodeURIComponent('English vocabulary ' + word.english + ' meaning')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-xs text-red-600 dark:text-red-400 hover:underline"

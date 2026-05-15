@@ -7,20 +7,20 @@ const PinyinContext = createContext<{
   toggle: () => void
 }>({ hidden: false, toggle: () => {} })
 
-export function PinyinProvider({ children }: { children: React.ReactNode }) {
+export function IpaProvider({ children }: { children: React.ReactNode }) {
   const [hidden, setHidden] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('hide-pinyin') === '1'
+    const stored = localStorage.getItem('hide-ipa') === '1'
     setHidden(stored)
-    document.body.classList.toggle('hide-pinyin', stored)
+    document.body.classList.toggle('hide-ipa', stored)
   }, [])
 
   const toggle = () => {
     setHidden(prev => {
       const next = !prev
-      localStorage.setItem('hide-pinyin', next ? '1' : '0')
-      document.body.classList.toggle('hide-pinyin', next)
+      localStorage.setItem('hide-ipa', next ? '1' : '0')
+      document.body.classList.toggle('hide-ipa', next)
       return next
     })
   }
@@ -28,4 +28,4 @@ export function PinyinProvider({ children }: { children: React.ReactNode }) {
   return <PinyinContext.Provider value={{ hidden, toggle }}>{children}</PinyinContext.Provider>
 }
 
-export const usePinyin = () => useContext(PinyinContext)
+export const useIpa = () => useContext(PinyinContext)

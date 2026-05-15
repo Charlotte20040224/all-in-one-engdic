@@ -72,10 +72,10 @@ model VerificationToken {
 model Word {
   id          String    @id @default(uuid())
   userId      String
-  thai        String
-  pinyin      String?
-  pinyinUS    String?
-  pinyinGB    String?
+  english     String
+  ipa         String?
+  ipaUS       String?
+  ipaGB       String?
   meaning     String?
   pos         String?
   examples    Json?
@@ -97,10 +97,10 @@ model Word {
 model Sentence {
   id          String   @id @default(cuid())
   userId      String
-  thai        String
-  pinyin      String
-  pinyinUS    String?
-  pinyinGB    String?
+  english     String
+  ipa         String
+  ipaUS       String?
+  ipaGB       String?
   zh          String
   grammar     String?
   grammarPattern String?

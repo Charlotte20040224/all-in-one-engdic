@@ -8,7 +8,7 @@ interface Props {
   className?: string
 }
 
-export function ClickableThai({ text, className = '' }: Props) {
+export function ClickableWord({ text, className = '' }: Props) {
   const router = useRouter()
   const ctx = useQuickLookup()
 
@@ -26,7 +26,7 @@ export function ClickableThai({ text, className = '' }: Props) {
   const tokens = text.split(/(\s+)/)
 
   return (
-    <span data-thai className={className}>
+    <span data-english className={className}>
       {tokens.map((tok, i) => {
         if (tok === '' || /^\s+$/.test(tok)) return <span key={i}>{tok}</span>
         return (

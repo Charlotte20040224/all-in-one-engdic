@@ -35,7 +35,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     })
   } else {
     const tooLongStr = findTooLongString({
-      thai: body.thai, pinyin: body.pinyin, meaning: body.meaning, pos: body.pos, note: body.note,
+      english: body.english, ipa: body.ipa, meaning: body.meaning, pos: body.pos, note: body.note,
     })
     if (tooLongStr) return NextResponse.json({ error: `${tooLongStr} too long (max 200)` }, { status: 400 })
 
@@ -45,8 +45,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     })
     if (tooLongJ) return NextResponse.json({ error: `${tooLongJ} too large (max 50000)` }, { status: 400 })
 
-    if (body.thai !== undefined) updateData.thai = body.thai
-    if (body.pinyin !== undefined) updateData.pinyin = body.pinyin
+    if (body.english !== undefined) updateData.english = body.english
+    if (body.ipa !== undefined) updateData.ipa = body.ipa
     if (body.meaning !== undefined) updateData.meaning = body.meaning
     if (body.pos !== undefined) updateData.pos = body.pos
     if (body.examples !== undefined) updateData.examples = body.examples

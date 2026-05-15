@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        thai: {
+        english: {
           50: '#fdf4ff',
           100: '#fae8ff',
           500: '#a855f7',

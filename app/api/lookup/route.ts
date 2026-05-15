@@ -4,9 +4,9 @@ import Anthropic from '@anthropic-ai/sdk'
 import { authOptions } from '@/lib/auth'
 import { rateLimit, tooManyRequests } from '@/lib/rateLimit'
 
-// 注意：DB schema 沿用泰文版的欄位名稱（thai / pinyin），目前儲存：
-// - thai   → 英文單字本身
-// - pinyin → IPA 國際音標（含 / / 包圍與重音符號 ˈ ˌ）
+// 注意：DB schema 沿用泰文版的欄位名稱（english / ipa），目前儲存：
+// - english   → 英文單字本身
+// - ipa → IPA 國際音標（含 / / 包圍與重音符號 ˈ ˌ）
 // - meaning / pos / examples.zh 等中文欄位 → 一律繁體中文
 
 export async function POST(req: Request) {
@@ -26,13 +26,13 @@ export async function POST(req: Request) {
 
   const commonRules = `重要規則：
 - 所有中文說明必須使用繁體中文（Traditional Chinese），不能出現簡體中文、韓文、日文
-- "thai" 欄位必須是英文單字／片語（只能使用拉丁字母、空格、連字號 -、撇號 '），不能填中文
-- 如果使用者輸入中文（例如「跳」、「謝謝」），請先翻成最常用、最自然的英文再填入 "thai"
-- 如果使用者輸入英文，直接放入 "thai"
-- "pinyin" 必須是 IPA 國際音標，用 / / 包起來；重音用 ˈ（主重音）和 ˌ（次重音）。預設用美式發音
-- "pinyinUS" = 美式發音的 IPA（用 / / 包起來）
-- "pinyinGB" = 英式發音的 IPA（用 / / 包起來）
-- pinyinUS 與 pinyinGB 一律都要回。**只有在英美發音「明顯可聽出差別」時才填不同值**，否則兩個欄位填完全一樣
+- "english" 欄位必須是英文單字／片語（只能使用拉丁字母、空格、連字號 -、撇號 '），不能填中文
+- 如果使用者輸入中文（例如「跳」、「謝謝」），請先翻成最常用、最自然的英文再填入 "english"
+- 如果使用者輸入英文，直接放入 "english"
+- "ipa" 必須是 IPA 國際音標，用 / / 包起來；重音用 ˈ（主重音）和 ˌ（次重音）。預設用美式發音
+- "ipaUS" = 美式發音的 IPA（用 / / 包起來）
+- "ipaGB" = 英式發音的 IPA（用 / / 包起來）
+- ipaUS 與 ipaGB 一律都要回。**只有在英美發音「明顯可聽出差別」時才填不同值**，否則兩個欄位填完全一樣
 - 「明顯差別」指：(a) 不同子音（例：schedule /ˈskedʒuːl/ vs /ˈʃedjuːl/），(b) 不同母音音質（例：tomato /təˈmeɪtoʊ/ vs /təˈmɑːtəʊ/、dance /dæns/ vs /dɑːns/、can't /kænt/ vs /kɑːnt/、path /pæθ/ vs /pɑːθ/），(c) 重音位置不同（例：advertisement、garage），(d) 多音節整體節奏不同
 - 「不明顯差別」**不要分開填**，兩邊填一樣即可：
    * 只是字尾 /r/ 的捲舌差異（water、teacher、doctor、mother、sister 等所有 -er 結尾）
@@ -50,23 +50,23 @@ ${commonRules}
 - 例如：bank → "銀行；河岸；倚靠"
 
 只回 JSON（只給 1 個例句，例句不需 vocabulary 或 grammar）：
-{"thai":"jump","pinyin":"/dʒʌmp/","pinyinUS":"/dʒʌmp/","pinyinGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə fens/","zh":"他跳過了圍牆。"}]}
+{"english":"jump","ipa":"/dʒʌmp/","ipaUS":"/dʒʌmp/","ipaGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"english":"He jumped over the fence.","ipa":"/hi dʒʌmpt ˈoʊvər ðə fens/","zh":"他跳過了圍牆。"}]}
 
-注意：thai 必須是英文，不能填「${query}」本身（除非輸入就是英文）。`
+注意：english 必須是英文，不能填「${query}」本身（除非輸入就是英文）。`
 
   const fullPrompt = `查英文「${query}」。
 
 ${commonRules}
 
 回傳欄位：
-- 必填：thai, pinyin, meaning, pos, examples（每例含 thai / pinyin / zh / vocabulary / grammar）
-- collocations：常見搭配片語 2-3 個，每項 {thai, pinyin, zh}；無則填 []
-- synonyms：近義詞 2-3 個，每項 {thai, pinyin, zh}；無則填 []
-- antonyms：反義詞 2-3 個，每項 {thai, pinyin, zh}；無則填 []
-- related：同字根、同主題、常一起出現的相關字 2-3 個（例如 jump 的 related 可包含 leap, hop, skip），每項 {thai, pinyin, zh}；無則填 []
-- 【重要】synonyms / antonyms / related 每一項都必須完整包含 thai、pinyin、zh 三個欄位，zh 不能省略也不能為空字串；如果想不到中文意思就不要列出該項
-- vocabulary（例句中的）：列出例句中出現的重要單字，每個含 {thai, pinyin, meaning}，至少 3-5 個；極短或極簡的例句才可填 []
-- variants：如果這個概念在英文有不同的表達方式（如英式 vs 美式、正式 vs 口語、俚語），列出 2-5 個常見說法，每項含 {thai, pinyin, meaning, frequency, context}，按使用頻率從高到低排序；若無明顯變體則回傳 []
+- 必填：english, ipa, meaning, pos, examples（每例含 english / ipa / zh / vocabulary / grammar）
+- collocations：常見搭配片語 2-3 個，每項 {english, ipa, zh}；無則填 []
+- synonyms：近義詞 2-3 個，每項 {english, ipa, zh}；無則填 []
+- antonyms：反義詞 2-3 個，每項 {english, ipa, zh}；無則填 []
+- related：同字根、同主題、常一起出現的相關字 2-3 個（例如 jump 的 related 可包含 leap, hop, skip），每項 {english, ipa, zh}；無則填 []
+- 【重要】synonyms / antonyms / related 每一項都必須完整包含 english、ipa、zh 三個欄位，zh 不能省略也不能為空字串；如果想不到中文意思就不要列出該項
+- vocabulary（例句中的）：列出例句中出現的重要單字，每個含 {english, ipa, meaning}，至少 3-5 個；極短或極簡的例句才可填 []
+- variants：如果這個概念在英文有不同的表達方式（如英式 vs 美式、正式 vs 口語、俚語），列出 2-5 個常見說法，每項含 {english, ipa, meaning, frequency, context}，按使用頻率從高到低排序；若無明顯變體則回傳 []
 - note：僅當有非平凡補充（例如英美用法差異、常見錯誤、文化背景）才回傳；無則整個欄位省略
 - frequency 只能填「最常用」/「常用」/「較少用」
 
@@ -84,9 +84,9 @@ ${commonRules}
 
 3. variants 欄位：將每個不同意思當成一個 variant 列出，並在 context 欄位標注該意思的使用情境
    例如 bank：
-   - {thai:"bank", meaning:"銀行", context:"金融機構，最常用"}
-   - {thai:"bank", meaning:"河岸", context:"地理／自然，河流、湖泊的岸邊"}
-   - {thai:"bank", meaning:"傾斜、倚靠", context:"動詞，描述飛機或物體傾斜"}
+   - {english:"bank", meaning:"銀行", context:"金融機構，最常用"}
+   - {english:"bank", meaning:"河岸", context:"地理／自然，河流、湖泊的岸邊"}
+   - {english:"bank", meaning:"傾斜、倚靠", context:"動詞，描述飛機或物體傾斜"}
 
 請全面思考查詢單字是否為一字多義，不要只回傳最常見的意思。
 
@@ -95,9 +95,9 @@ grammar 欄位（句型分析）：
 - 如有重要文法點（時態、語氣、片語動詞、慣用語），可附帶說明
 
 只回 JSON：
-{"thai":"jump","pinyin":"/dʒʌmp/","pinyinUS":"/dʒʌmp/","pinyinGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"thai":"He jumped over the high fence.","pinyin":"/hi dʒʌmpt ˈoʊvər ðə haɪ fens/","zh":"他跳過了高的圍牆。","vocabulary":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳"},{"thai":"over","pinyin":"/ˈoʊvər/","meaning":"越過"},{"thai":"fence","pinyin":"/fens/","meaning":"圍牆"},{"thai":"high","pinyin":"/haɪ/","meaning":"高的"}],"grammar":"S + V(過去式) + over + N（主詞 + 動詞 + 介系詞 + 受詞），描述跨越動作"}],"collocations":[{"thai":"jump rope","pinyin":"/dʒʌmp roʊp/","zh":"跳繩"},{"thai":"jump in","pinyin":"/dʒʌmp ɪn/","zh":"加入、插話"}],"synonyms":[{"thai":"leap","pinyin":"/liːp/","zh":"跳躍（較文學）"},{"thai":"hop","pinyin":"/hɒp/","zh":"單腳跳"}],"antonyms":[{"thai":"land","pinyin":"/lænd/","zh":"著陸、降落"}],"related":[{"thai":"skip","pinyin":"/skɪp/","zh":"蹦蹦跳跳、略過"},{"thai":"bounce","pinyin":"/baʊns/","zh":"彈跳"}],"variants":[{"thai":"jump","pinyin":"/dʒʌmp/","meaning":"跳、跳躍","frequency":"最常用","context":"標準說法"},{"thai":"leap","pinyin":"/liːp/","meaning":"躍、大跳","frequency":"常用","context":"較文學或強調幅度"},{"thai":"hop","pinyin":"/hɒp/","meaning":"單腳跳、小跳","frequency":"常用","context":"小跳或輕鬆語氣"}]}
+{"english":"jump","ipa":"/dʒʌmp/","ipaUS":"/dʒʌmp/","ipaGB":"/dʒʌmp/","meaning":"跳、跳躍","pos":"動詞","examples":[{"english":"He jumped over the high fence.","ipa":"/hi dʒʌmpt ˈoʊvər ðə haɪ fens/","zh":"他跳過了高的圍牆。","vocabulary":[{"english":"jump","ipa":"/dʒʌmp/","meaning":"跳"},{"english":"over","ipa":"/ˈoʊvər/","meaning":"越過"},{"english":"fence","ipa":"/fens/","meaning":"圍牆"},{"english":"high","ipa":"/haɪ/","meaning":"高的"}],"grammar":"S + V(過去式) + over + N（主詞 + 動詞 + 介系詞 + 受詞），描述跨越動作"}],"collocations":[{"english":"jump rope","ipa":"/dʒʌmp roʊp/","zh":"跳繩"},{"english":"jump in","ipa":"/dʒʌmp ɪn/","zh":"加入、插話"}],"synonyms":[{"english":"leap","ipa":"/liːp/","zh":"跳躍（較文學）"},{"english":"hop","ipa":"/hɒp/","zh":"單腳跳"}],"antonyms":[{"english":"land","ipa":"/lænd/","zh":"著陸、降落"}],"related":[{"english":"skip","ipa":"/skɪp/","zh":"蹦蹦跳跳、略過"},{"english":"bounce","ipa":"/baʊns/","zh":"彈跳"}],"variants":[{"english":"jump","ipa":"/dʒʌmp/","meaning":"跳、跳躍","frequency":"最常用","context":"標準說法"},{"english":"leap","ipa":"/liːp/","meaning":"躍、大跳","frequency":"常用","context":"較文學或強調幅度"},{"english":"hop","ipa":"/hɒp/","meaning":"單腳跳、小跳","frequency":"常用","context":"小跳或輕鬆語氣"}]}
 
-注意：thai 必須是英文。`
+注意：english 必須是英文。`
 
   const prompt = isQuick ? quickPrompt : fullPrompt
 
@@ -108,21 +108,21 @@ grammar 欄位（句型分析）：
   const containsJapanese = (text: string): boolean => /[぀-ゟ゠-ヿ]/.test(text)
 
   const hasCJKInThai = (r: any): boolean => {
-    if (typeof r?.thai === 'string' && CJK.test(r.thai)) return true
-    if (Array.isArray(r?.examples) && r.examples.some((ex: any) => typeof ex?.thai === 'string' && CJK.test(ex.thai))) return true
-    if (Array.isArray(r?.variants) && r.variants.some((v: any) => typeof v?.thai === 'string' && CJK.test(v.thai))) return true
+    if (typeof r?.english === 'string' && CJK.test(r.english)) return true
+    if (Array.isArray(r?.examples) && r.examples.some((ex: any) => typeof ex?.english === 'string' && CJK.test(ex.english))) return true
+    if (Array.isArray(r?.variants) && r.variants.some((v: any) => typeof v?.english === 'string' && CJK.test(v.english))) return true
     return false
   }
 
   const collectThaiFields = (r: any): string[] => {
     const fields: string[] = []
-    if (typeof r?.thai === 'string') fields.push(r.thai)
+    if (typeof r?.english === 'string') fields.push(r.english)
     const collectFromArr = (arr: any) => {
       if (!Array.isArray(arr)) return
       for (const item of arr) {
-        if (typeof item?.thai === 'string') fields.push(item.thai)
+        if (typeof item?.english === 'string') fields.push(item.english)
         if (Array.isArray(item?.vocabulary)) {
-          for (const v of item.vocabulary) if (typeof v?.thai === 'string') fields.push(v.thai)
+          for (const v of item.vocabulary) if (typeof v?.english === 'string') fields.push(v.english)
         }
       }
     }
@@ -143,7 +143,7 @@ grammar 欄位（句型分析）：
     const message = await client.messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: isQuick ? 400 : 4096,
-      system: '英文字典助手。中文一律使用繁體中文。絕不可出現韓文、日文、簡體中文或其他語言。thai 欄位只能是英文（拉丁字母、空格、連字號、撇號）。pinyin 欄位是 IPA 國際音標，用 / / 包圍，重音用 ˈ 標示。',
+      system: '英文字典助手。中文一律使用繁體中文。絕不可出現韓文、日文、簡體中文或其他語言。english 欄位只能是英文（拉丁字母、空格、連字號、撇號）。ipa 欄位是 IPA 國際音標，用 / / 包圍，重音用 ˈ 標示。',
       messages: [{ role: 'user', content: prompt }],
     })
     const text = message.content[0].type === 'text' ? message.content[0].text : ''
@@ -169,7 +169,7 @@ grammar 欄位（句型分析）：
     if (!result) return NextResponse.json(friendlyError)
 
     if (hasCJKInThai(result) || hasWrongLanguageInThai(result)) {
-      console.warn('[lookup] invalid chars detected in thai fields (CJK/Korean/Japanese), retrying once. thai:', result.thai)
+      console.warn('[lookup] invalid chars detected in english fields (CJK/Korean/Japanese), retrying once. english:', result.english)
       const retry = await callClaude()
       if (retry) result = retry
     }
@@ -179,7 +179,7 @@ grammar 欄位（句型分析）：
         const vocab = ex.vocabulary
         let normalized: any[] = []
         if (Array.isArray(vocab)) {
-          normalized = vocab.filter((v: any) => v && typeof v === 'object' && v.thai)
+          normalized = vocab.filter((v: any) => v && typeof v === 'object' && v.english)
         }
         console.log('[lookup] example vocabulary:', JSON.stringify(normalized))
         return { ...ex, vocabulary: normalized }
@@ -190,10 +190,10 @@ grammar 欄位（句型分析）：
       result.variants = []
     } else {
       result.variants = result.variants.filter(
-        (v: any) => v && typeof v === 'object' && v.thai
+        (v: any) => v && typeof v === 'object' && v.english
       )
     }
-    console.log('[lookup] thai:', result.thai, '| variants count:', result.variants.length)
+    console.log('[lookup] english:', result.english, '| variants count:', result.variants.length)
 
     return NextResponse.json(result)
   } catch (err) {

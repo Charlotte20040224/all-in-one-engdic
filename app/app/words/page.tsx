@@ -20,27 +20,27 @@ export default function WordsPage() {
 
   useEffect(() => {
     setNow(new Date())
-    setFavoriteThai(new Set(readFavoriteWords().map(f => f.thai)))
+    setFavoriteThai(new Set(readFavoriteWords().map(f => f.english)))
     fetch('/api/words')
       .then(r => r.json())
       .then(data => {
         setWords(data)
         setLoading(false)
-        data.slice(0, 5).forEach((w: WordEntry) => prefetchAudio(w.thai))
+        data.slice(0, 5).forEach((w: WordEntry) => prefetchAudio(w.english))
       })
   }, [])
 
   const filtered = words.filter(w => {
     const matchSearch =
       !search ||
-      w.thai.includes(search) ||
+      w.english.includes(search) ||
       w.meaning?.toLowerCase().includes(search.toLowerCase()) ||
-      w.pinyin?.toLowerCase().includes(search.toLowerCase())
+      w.ipa?.toLowerCase().includes(search.toLowerCase())
 
     const matchFilter =
       filter === 'all' ||
       (filter === 'due' && now !== null && new Date(w.nextReview) <= now) ||
-      (filter === 'favorite' && favoriteThai.has(w.thai)) ||
+      (filter === 'favorite' && favoriteThai.has(w.english)) ||
       filter === String(w.srsLevel)
 
     return matchSearch && matchFilter

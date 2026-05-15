@@ -12,8 +12,8 @@ export default function FavoritesPage() {
     setList(readFavorites())
   }, [])
 
-  const onRemove = (thai: string) => {
-    setList(removeFavorite(thai))
+  const onRemove = (english: string) => {
+    setList(removeFavorite(english))
   }
 
   return (
@@ -28,19 +28,19 @@ export default function FavoritesPage() {
       ) : (
         <div className="space-y-3">
           {list.map(item => (
-            <div key={item.thai} className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 space-y-2">
+            <div key={item.english} className="bg-white dark:bg-gray-800 rounded-xl shadow p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <SpeakButton text={item.thai} />
-                    <CopyButton text={item.thai} />
-                    <span data-thai className="text-base font-medium text-gray-900 dark:text-white break-words">
-                      {item.thai}
+                    <SpeakButton text={item.english} />
+                    <CopyButton text={item.english} />
+                    <span data-english className="text-base font-medium text-gray-900 dark:text-white break-words">
+                      {item.english}
                     </span>
                   </div>
-                  {item.romanization && (
-                    <div data-pinyin className="text-xs text-purple-600 dark:text-purple-400 mt-0.5">
-                      {item.romanization}
+                  {item.ipa && (
+                    <div data-ipa className="text-xs text-purple-600 dark:text-purple-400 mt-0.5">
+                      {item.ipa}
                     </div>
                   )}
                   {item.chinese && (
@@ -52,7 +52,7 @@ export default function FavoritesPage() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => onRemove(item.thai)}
+                  onClick={() => onRemove(item.english)}
                   title="移除收藏"
                   className="shrink-0 text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-900/30 w-8 h-8 rounded-full transition"
                 >

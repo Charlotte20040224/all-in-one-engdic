@@ -3,9 +3,9 @@
 // 分類：A 助動詞 B 時態 C 連接詞 D 疑問 E 比較 F 混淆字 G 生活句型
 // ============================================================
 //
-// 注意：欄位 `thai` / `romanization` / `pinyin` 沿用泰文版的命名，目前儲存
+// 注意：欄位 `english` / `ipa` / `ipa` 沿用泰文版的命名，目前儲存
 // 「英文文字」與「IPA 音標」，等之後決定是否做欄位重命名再一併調整。
-// quiz.blanksMale / blankRomanizationsMale 是泰文敬語性別差異欄位，英文版
+// quiz.blanksMale / blankIpasMale 是泰文敬語性別差異欄位，英文版
 // 不使用，留空即可。
 
 export type Level = 'beginner' | 'intermediate' | 'advanced'
@@ -23,7 +23,7 @@ export interface GrammarPattern {
   category: Category
   level: Level
   keyword: string              // 核心字（英文）
-  keywordRomanization: string  // IPA 音標
+  keywordIpa: string  // IPA 音標
   pattern: string              // 英文公式
   patternZh: string            // 中文公式
   nameZh: string               // 句型中文名稱
@@ -31,19 +31,19 @@ export interface GrammarPattern {
   tipZh?: string               // 補充小提示
   commonMistakes?: string[]    // 常見錯誤
   examples: {
-    thai: string                                // 英文例句
-    romanization: string                        // IPA
+    english: string                                // 英文例句
+    ipa: string                        // IPA
     chinese: string                             // 中文翻譯
     difficulty?: 'easy' | 'medium' | 'hard'
-    words?: { thai: string; rom: string; zh: string }[]
+    words?: { english: string; ipa: string; zh: string }[]
   }[]
   quiz: {
     question: string
     blanks: string[]
     blanksMale?: string[]
     hint: string
-    blankRomanizations?: string[]
-    blankRomanizationsMale?: string[]
+    blankIpas?: string[]
+    blankIpasMale?: string[]
   }
 }
 
@@ -56,7 +56,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'A_modal',
     level: 'beginner',
     keyword: 'must',
-    keywordRomanization: '/mʌst/',
+    keywordIpa: '/mʌst/',
     pattern: 'S + must + V (原形)',
     patternZh: '主詞 + must + 動詞原形',
     nameZh: '必須／一定要',
@@ -68,34 +68,34 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I must finish this report tonight.',
-        romanization: '/aɪ mʌst ˈfɪnɪʃ ðɪs rɪˈpɔːrt təˈnaɪt/',
+        english: 'I must finish this report tonight.',
+        ipa: '/aɪ mʌst ˈfɪnɪʃ ðɪs rɪˈpɔːrt təˈnaɪt/',
         chinese: '我今晚一定要把這份報告做完。',
         difficulty: 'easy',
         words: [
-          { thai: 'must', rom: '/mʌst/', zh: '必須' },
-          { thai: 'finish', rom: '/ˈfɪnɪʃ/', zh: '完成' },
-          { thai: 'tonight', rom: '/təˈnaɪt/', zh: '今晚' },
+          { english: 'must', ipa: '/mʌst/', zh: '必須' },
+          { english: 'finish', ipa: '/ˈfɪnɪʃ/', zh: '完成' },
+          { english: 'tonight', ipa: '/təˈnaɪt/', zh: '今晚' },
         ],
       },
       {
-        thai: 'You must wear a seatbelt.',
-        romanization: '/ju mʌst wer ə ˈsiːtbelt/',
+        english: 'You must wear a seatbelt.',
+        ipa: '/ju mʌst wer ə ˈsiːtbelt/',
         chinese: '你一定要繫安全帶。',
         difficulty: 'easy',
         words: [
-          { thai: 'wear', rom: '/wer/', zh: '穿戴' },
-          { thai: 'seatbelt', rom: '/ˈsiːtbelt/', zh: '安全帶' },
+          { english: 'wear', ipa: '/wer/', zh: '穿戴' },
+          { english: 'seatbelt', ipa: '/ˈsiːtbelt/', zh: '安全帶' },
         ],
       },
       {
-        thai: 'She must be tired after that long flight.',
-        romanization: '/ʃi mʌst bi ˈtaɪərd ˈæftər ðæt lɔːŋ flaɪt/',
+        english: 'She must be tired after that long flight.',
+        ipa: '/ʃi mʌst bi ˈtaɪərd ˈæftər ðæt lɔːŋ flaɪt/',
         chinese: '她搭那麼久的飛機，一定很累。',
         difficulty: 'medium',
         words: [
-          { thai: 'tired', rom: '/ˈtaɪərd/', zh: '疲累的' },
-          { thai: 'flight', rom: '/flaɪt/', zh: '航班' },
+          { english: 'tired', ipa: '/ˈtaɪərd/', zh: '疲累的' },
+          { english: 'flight', ipa: '/flaɪt/', zh: '航班' },
         ],
       },
     ],
@@ -103,7 +103,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我必須早起。（用 must）',
       blanks: ['I must get up early.'],
       hint: '主詞 + must + 動詞原形',
-      blankRomanizations: ['/aɪ mʌst ɡet ʌp ˈɜːrli/'],
+      blankIpas: ['/aɪ mʌst ɡet ʌp ˈɜːrli/'],
     },
   },
 
@@ -112,7 +112,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'A_modal',
     level: 'beginner',
     keyword: 'can',
-    keywordRomanization: '/kæn/',
+    keywordIpa: '/kæn/',
     pattern: 'S + can + V (原形)',
     patternZh: '主詞 + can + 動詞原形',
     nameZh: '能夠／可以',
@@ -124,32 +124,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I can speak a little English.',
-        romanization: '/aɪ kæn spiːk ə ˈlɪtl ˈɪŋɡlɪʃ/',
+        english: 'I can speak a little English.',
+        ipa: '/aɪ kæn spiːk ə ˈlɪtl ˈɪŋɡlɪʃ/',
         chinese: '我會講一點英文。',
         difficulty: 'easy',
         words: [
-          { thai: 'speak', rom: '/spiːk/', zh: '說' },
-          { thai: 'a little', rom: '/ə ˈlɪtl/', zh: '一點點' },
+          { english: 'speak', ipa: '/spiːk/', zh: '說' },
+          { english: 'a little', ipa: '/ə ˈlɪtl/', zh: '一點點' },
         ],
       },
       {
-        thai: 'Can you help me carry this?',
-        romanization: '/kæn ju help miː ˈkæri ðɪs/',
+        english: 'Can you help me carry this?',
+        ipa: '/kæn ju help miː ˈkæri ðɪs/',
         chinese: '可以幫我搬這個嗎？',
         difficulty: 'easy',
         words: [
-          { thai: 'help', rom: '/help/', zh: '幫助' },
-          { thai: 'carry', rom: '/ˈkæri/', zh: '搬、提' },
+          { english: 'help', ipa: '/help/', zh: '幫助' },
+          { english: 'carry', ipa: '/ˈkæri/', zh: '搬、提' },
         ],
       },
       {
-        thai: 'She can play the piano very well.',
-        romanization: '/ʃi kæn pleɪ ðə piˈænoʊ ˈveri wel/',
+        english: 'She can play the piano very well.',
+        ipa: '/ʃi kæn pleɪ ðə piˈænoʊ ˈveri wel/',
         chinese: '她鋼琴彈得很好。',
         difficulty: 'medium',
         words: [
-          { thai: 'piano', rom: '/piˈænoʊ/', zh: '鋼琴' },
+          { english: 'piano', ipa: '/piˈænoʊ/', zh: '鋼琴' },
         ],
       },
     ],
@@ -157,7 +157,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '你會游泳嗎？（用 can）',
       blanks: ['Can you swim?'],
       hint: 'Can + 主詞 + 動詞原形？',
-      blankRomanizations: ['/kæn ju swɪm/'],
+      blankIpas: ['/kæn ju swɪm/'],
     },
   },
 
@@ -166,7 +166,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'A_modal',
     level: 'beginner',
     keyword: 'should',
-    keywordRomanization: '/ʃʊd/',
+    keywordIpa: '/ʃʊd/',
     pattern: 'S + should + V (原形)',
     patternZh: '主詞 + should + 動詞原形',
     nameZh: '應該／建議',
@@ -177,32 +177,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'You should drink more water.',
-        romanization: '/ju ʃʊd drɪŋk mɔːr ˈwɔːtər/',
+        english: 'You should drink more water.',
+        ipa: '/ju ʃʊd drɪŋk mɔːr ˈwɔːtər/',
         chinese: '你應該多喝水。',
         difficulty: 'easy',
         words: [
-          { thai: 'drink', rom: '/drɪŋk/', zh: '喝' },
-          { thai: 'water', rom: '/ˈwɔːtər/', zh: '水' },
+          { english: 'drink', ipa: '/drɪŋk/', zh: '喝' },
+          { english: 'water', ipa: '/ˈwɔːtər/', zh: '水' },
         ],
       },
       {
-        thai: 'We should leave now.',
-        romanization: '/wi ʃʊd liːv naʊ/',
+        english: 'We should leave now.',
+        ipa: '/wi ʃʊd liːv naʊ/',
         chinese: '我們現在該走了。',
         difficulty: 'easy',
         words: [
-          { thai: 'leave', rom: '/liːv/', zh: '離開' },
+          { english: 'leave', ipa: '/liːv/', zh: '離開' },
         ],
       },
       {
-        thai: "You shouldn't worry too much about it.",
-        romanization: '/ju ʃʊdnt ˈwɜːri tuː mʌtʃ əˈbaʊt ɪt/',
+        english: "You shouldn't worry too much about it.",
+        ipa: '/ju ʃʊdnt ˈwɜːri tuː mʌtʃ əˈbaʊt ɪt/',
         chinese: '你不應該太過擔心這件事。',
         difficulty: 'medium',
         words: [
-          { thai: "shouldn't", rom: '/ʃʊdnt/', zh: '不該' },
-          { thai: 'worry', rom: '/ˈwɜːri/', zh: '擔心' },
+          { english: "shouldn't", ipa: '/ʃʊdnt/', zh: '不該' },
+          { english: 'worry', ipa: '/ˈwɜːri/', zh: '擔心' },
         ],
       },
     ],
@@ -210,7 +210,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '你應該早點睡。（用 should）',
       blanks: ['You should go to bed earlier.'],
       hint: '主詞 + should + 動詞原形',
-      blankRomanizations: ['/ju ʃʊd ɡoʊ tu bed ˈɜːrliər/'],
+      blankIpas: ['/ju ʃʊd ɡoʊ tu bed ˈɜːrliər/'],
     },
   },
 
@@ -222,7 +222,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'B_tense',
     level: 'beginner',
     keyword: 'be V-ing',
-    keywordRomanization: '/biː ˈverb ɪŋ/',
+    keywordIpa: '/biː ˈverb ɪŋ/',
     pattern: 'S + am/is/are + V-ing',
     patternZh: '主詞 + be 動詞 + 動詞-ing',
     nameZh: '現在進行式',
@@ -234,32 +234,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I am studying English right now.',
-        romanization: '/aɪ æm ˈstʌdiɪŋ ˈɪŋɡlɪʃ raɪt naʊ/',
+        english: 'I am studying English right now.',
+        ipa: '/aɪ æm ˈstʌdiɪŋ ˈɪŋɡlɪʃ raɪt naʊ/',
         chinese: '我現在正在學英文。',
         difficulty: 'easy',
         words: [
-          { thai: 'study', rom: '/ˈstʌdi/', zh: '學習、研讀' },
-          { thai: 'right now', rom: '/raɪt naʊ/', zh: '現在' },
+          { english: 'study', ipa: '/ˈstʌdi/', zh: '學習、研讀' },
+          { english: 'right now', ipa: '/raɪt naʊ/', zh: '現在' },
         ],
       },
       {
-        thai: 'She is cooking dinner.',
-        romanization: '/ʃi ɪz ˈkʊkɪŋ ˈdɪnər/',
+        english: 'She is cooking dinner.',
+        ipa: '/ʃi ɪz ˈkʊkɪŋ ˈdɪnər/',
         chinese: '她在煮晚餐。',
         difficulty: 'easy',
         words: [
-          { thai: 'cook', rom: '/kʊk/', zh: '煮' },
-          { thai: 'dinner', rom: '/ˈdɪnər/', zh: '晚餐' },
+          { english: 'cook', ipa: '/kʊk/', zh: '煮' },
+          { english: 'dinner', ipa: '/ˈdɪnər/', zh: '晚餐' },
         ],
       },
       {
-        thai: 'They are not listening to me.',
-        romanization: '/ðeɪ ɑːr nɒt ˈlɪsnɪŋ tu miː/',
+        english: 'They are not listening to me.',
+        ipa: '/ðeɪ ɑːr nɒt ˈlɪsnɪŋ tu miː/',
         chinese: '他們沒在聽我說話。',
         difficulty: 'medium',
         words: [
-          { thai: 'listen', rom: '/ˈlɪsn/', zh: '聽' },
+          { english: 'listen', ipa: '/ˈlɪsn/', zh: '聽' },
         ],
       },
     ],
@@ -267,7 +267,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我正在寫一封 email。（用現在進行式）',
       blanks: ['I am writing an email.'],
       hint: '主詞 + am/is/are + V-ing',
-      blankRomanizations: ['/aɪ æm ˈraɪtɪŋ ən ˈiːmeɪl/'],
+      blankIpas: ['/aɪ æm ˈraɪtɪŋ ən ˈiːmeɪl/'],
     },
   },
 
@@ -276,7 +276,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'B_tense',
     level: 'intermediate',
     keyword: 'have V-ed',
-    keywordRomanization: '/hæv ˈverb d/',
+    keywordIpa: '/hæv ˈverb d/',
     pattern: 'S + have/has + V-ed (p.p.)',
     patternZh: '主詞 + have/has + 過去分詞',
     nameZh: '現在完成式',
@@ -288,33 +288,33 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I have lived here for five years.',
-        romanization: '/aɪ hæv lɪvd hɪər fɔːr faɪv jɪərz/',
+        english: 'I have lived here for five years.',
+        ipa: '/aɪ hæv lɪvd hɪər fɔːr faɪv jɪərz/',
         chinese: '我在這住了五年了。',
         difficulty: 'medium',
         words: [
-          { thai: 'live', rom: '/lɪv/', zh: '住、活' },
-          { thai: 'for', rom: '/fɔːr/', zh: '持續（時間長度）' },
+          { english: 'live', ipa: '/lɪv/', zh: '住、活' },
+          { english: 'for', ipa: '/fɔːr/', zh: '持續（時間長度）' },
         ],
       },
       {
-        thai: 'She has just left the office.',
-        romanization: '/ʃi hæz dʒʌst left ði ˈɒfɪs/',
+        english: 'She has just left the office.',
+        ipa: '/ʃi hæz dʒʌst left ði ˈɒfɪs/',
         chinese: '她剛剛離開辦公室。',
         difficulty: 'medium',
         words: [
-          { thai: 'just', rom: '/dʒʌst/', zh: '剛剛' },
-          { thai: 'left', rom: '/left/', zh: 'leave 的過去分詞' },
+          { english: 'just', ipa: '/dʒʌst/', zh: '剛剛' },
+          { english: 'left', ipa: '/left/', zh: 'leave 的過去分詞' },
         ],
       },
       {
-        thai: 'Have you ever tried Indian food?',
-        romanization: '/hæv ju ˈevər traɪd ˈɪndiən fuːd/',
+        english: 'Have you ever tried Indian food?',
+        ipa: '/hæv ju ˈevər traɪd ˈɪndiən fuːd/',
         chinese: '你吃過印度菜嗎？',
         difficulty: 'medium',
         words: [
-          { thai: 'ever', rom: '/ˈevər/', zh: '曾經' },
-          { thai: 'tried', rom: '/traɪd/', zh: 'try 的過去分詞' },
+          { english: 'ever', ipa: '/ˈevər/', zh: '曾經' },
+          { english: 'tried', ipa: '/traɪd/', zh: 'try 的過去分詞' },
         ],
       },
     ],
@@ -322,7 +322,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我從來沒去過巴黎。（用現在完成式）',
       blanks: ['I have never been to Paris.'],
       hint: '主詞 + have/has + never + been to + 地點',
-      blankRomanizations: ['/aɪ hæv ˈnevər bɪn tu ˈpærɪs/'],
+      blankIpas: ['/aɪ hæv ˈnevər bɪn tu ˈpærɪs/'],
     },
   },
 
@@ -331,7 +331,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'B_tense',
     level: 'beginner',
     keyword: 'be going to',
-    keywordRomanization: '/biː ˈɡoʊɪŋ tu/',
+    keywordIpa: '/biː ˈɡoʊɪŋ tu/',
     pattern: 'S + am/is/are + going to + V',
     patternZh: '主詞 + be 動詞 + going to + 動詞原形',
     nameZh: '計畫好的未來',
@@ -342,32 +342,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I am going to visit my grandma this weekend.',
-        romanization: '/aɪ æm ˈɡoʊɪŋ tu ˈvɪzɪt maɪ ˈɡrænmɑː ðɪs ˈwiːkend/',
+        english: 'I am going to visit my grandma this weekend.',
+        ipa: '/aɪ æm ˈɡoʊɪŋ tu ˈvɪzɪt maɪ ˈɡrænmɑː ðɪs ˈwiːkend/',
         chinese: '我這週末要去看奶奶。',
         difficulty: 'easy',
         words: [
-          { thai: 'visit', rom: '/ˈvɪzɪt/', zh: '拜訪' },
-          { thai: 'weekend', rom: '/ˈwiːkend/', zh: '週末' },
+          { english: 'visit', ipa: '/ˈvɪzɪt/', zh: '拜訪' },
+          { english: 'weekend', ipa: '/ˈwiːkend/', zh: '週末' },
         ],
       },
       {
-        thai: "It's going to rain soon.",
-        romanization: '/ɪts ˈɡoʊɪŋ tu reɪn suːn/',
+        english: "It's going to rain soon.",
+        ipa: '/ɪts ˈɡoʊɪŋ tu reɪn suːn/',
         chinese: '快下雨了。',
         difficulty: 'easy',
         words: [
-          { thai: 'rain', rom: '/reɪn/', zh: '下雨' },
-          { thai: 'soon', rom: '/suːn/', zh: '很快' },
+          { english: 'rain', ipa: '/reɪn/', zh: '下雨' },
+          { english: 'soon', ipa: '/suːn/', zh: '很快' },
         ],
       },
       {
-        thai: 'They are going to get married next year.',
-        romanization: '/ðeɪ ɑːr ˈɡoʊɪŋ tu ɡet ˈmærid nekst jɪər/',
+        english: 'They are going to get married next year.',
+        ipa: '/ðeɪ ɑːr ˈɡoʊɪŋ tu ɡet ˈmærid nekst jɪər/',
         chinese: '他們明年要結婚了。',
         difficulty: 'medium',
         words: [
-          { thai: 'get married', rom: '/ɡet ˈmærid/', zh: '結婚' },
+          { english: 'get married', ipa: '/ɡet ˈmærid/', zh: '結婚' },
         ],
       },
     ],
@@ -375,7 +375,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我明天要打給她。（用 be going to）',
       blanks: ['I am going to call her tomorrow.'],
       hint: '主詞 + am/is/are + going to + 動詞原形',
-      blankRomanizations: ['/aɪ æm ˈɡoʊɪŋ tu kɔːl hər təˈmɒroʊ/'],
+      blankIpas: ['/aɪ æm ˈɡoʊɪŋ tu kɔːl hər təˈmɒroʊ/'],
     },
   },
 
@@ -387,7 +387,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'C_connector',
     level: 'beginner',
     keyword: 'because',
-    keywordRomanization: '/bɪˈkɒz/',
+    keywordIpa: '/bɪˈkɒz/',
     pattern: 'S + V ..., because + S + V ...',
     patternZh: '結果, because + 原因',
     nameZh: '因為（解釋原因）',
@@ -398,33 +398,33 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: "I'm tired because I didn't sleep well.",
-        romanization: '/aɪm ˈtaɪərd bɪˈkɒz aɪ ˈdɪdnt sliːp wel/',
+        english: "I'm tired because I didn't sleep well.",
+        ipa: '/aɪm ˈtaɪərd bɪˈkɒz aɪ ˈdɪdnt sliːp wel/',
         chinese: '我很累，因為昨晚沒睡好。',
         difficulty: 'easy',
         words: [
-          { thai: 'tired', rom: '/ˈtaɪərd/', zh: '累的' },
-          { thai: 'sleep', rom: '/sliːp/', zh: '睡覺' },
+          { english: 'tired', ipa: '/ˈtaɪərd/', zh: '累的' },
+          { english: 'sleep', ipa: '/sliːp/', zh: '睡覺' },
         ],
       },
       {
-        thai: 'She stayed home because she was sick.',
-        romanization: '/ʃi steɪd hoʊm bɪˈkɒz ʃi wɒz sɪk/',
+        english: 'She stayed home because she was sick.',
+        ipa: '/ʃi steɪd hoʊm bɪˈkɒz ʃi wɒz sɪk/',
         chinese: '她待在家，因為生病了。',
         difficulty: 'easy',
         words: [
-          { thai: 'stay', rom: '/steɪ/', zh: '停留' },
-          { thai: 'sick', rom: '/sɪk/', zh: '生病的' },
+          { english: 'stay', ipa: '/steɪ/', zh: '停留' },
+          { english: 'sick', ipa: '/sɪk/', zh: '生病的' },
         ],
       },
       {
-        thai: 'We canceled the trip because of the typhoon.',
-        romanization: '/wi ˈkænsld ðə trɪp bɪˈkɒz əv ðə taɪˈfuːn/',
+        english: 'We canceled the trip because of the typhoon.',
+        ipa: '/wi ˈkænsld ðə trɪp bɪˈkɒz əv ðə taɪˈfuːn/',
         chinese: '我們因為颱風取消了行程。',
         difficulty: 'medium',
         words: [
-          { thai: 'cancel', rom: '/ˈkænsl/', zh: '取消' },
-          { thai: 'typhoon', rom: '/taɪˈfuːn/', zh: '颱風' },
+          { english: 'cancel', ipa: '/ˈkænsl/', zh: '取消' },
+          { english: 'typhoon', ipa: '/taɪˈfuːn/', zh: '颱風' },
         ],
       },
     ],
@@ -432,7 +432,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我喜歡她，因為她很善良。（用 because）',
       blanks: ['I like her because she is kind.'],
       hint: 'S + V, because + S + V',
-      blankRomanizations: ['/aɪ laɪk hər bɪˈkɒz ʃi ɪz kaɪnd/'],
+      blankIpas: ['/aɪ laɪk hər bɪˈkɒz ʃi ɪz kaɪnd/'],
     },
   },
 
@@ -441,7 +441,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'C_connector',
     level: 'intermediate',
     keyword: 'if',
-    keywordRomanization: '/ɪf/',
+    keywordIpa: '/ɪf/',
     pattern: 'If + S + V (現在式), S + will + V',
     patternZh: '如果 + 條件（現在式）, 結果（未來式）',
     nameZh: '第一條件句（真實未來）',
@@ -452,33 +452,33 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'If it rains, we will stay home.',
-        romanization: '/ɪf ɪt reɪnz wi wɪl steɪ hoʊm/',
+        english: 'If it rains, we will stay home.',
+        ipa: '/ɪf ɪt reɪnz wi wɪl steɪ hoʊm/',
         chinese: '如果下雨，我們就待在家。',
         difficulty: 'easy',
         words: [
-          { thai: 'rain', rom: '/reɪn/', zh: '下雨' },
-          { thai: 'stay', rom: '/steɪ/', zh: '停留' },
+          { english: 'rain', ipa: '/reɪn/', zh: '下雨' },
+          { english: 'stay', ipa: '/steɪ/', zh: '停留' },
         ],
       },
       {
-        thai: "If you study hard, you'll pass the exam.",
-        romanization: '/ɪf ju ˈstʌdi hɑːrd jul pæs ði ɪɡˈzæm/',
+        english: "If you study hard, you'll pass the exam.",
+        ipa: '/ɪf ju ˈstʌdi hɑːrd jul pæs ði ɪɡˈzæm/',
         chinese: '如果你認真讀書，你就會通過考試。',
         difficulty: 'medium',
         words: [
-          { thai: 'study hard', rom: '/ˈstʌdi hɑːrd/', zh: '認真讀書' },
-          { thai: 'pass', rom: '/pæs/', zh: '通過' },
+          { english: 'study hard', ipa: '/ˈstʌdi hɑːrd/', zh: '認真讀書' },
+          { english: 'pass', ipa: '/pæs/', zh: '通過' },
         ],
       },
       {
-        thai: "If she calls, I'll let you know.",
-        romanization: '/ɪf ʃi kɔːlz aɪl let ju noʊ/',
+        english: "If she calls, I'll let you know.",
+        ipa: '/ɪf ʃi kɔːlz aɪl let ju noʊ/',
         chinese: '如果她打來，我會告訴你。',
         difficulty: 'medium',
         words: [
-          { thai: 'call', rom: '/kɔːl/', zh: '打電話' },
-          { thai: 'let you know', rom: '/let ju noʊ/', zh: '告訴你' },
+          { english: 'call', ipa: '/kɔːl/', zh: '打電話' },
+          { english: 'let you know', ipa: '/let ju noʊ/', zh: '告訴你' },
         ],
       },
     ],
@@ -486,7 +486,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '如果你想去，我就跟你一起去。（用第一條件句）',
       blanks: ['If you want to go, I will go with you.'],
       hint: 'If + S + V (現在式), S + will + V',
-      blankRomanizations: ['/ɪf ju wɒnt tu ɡoʊ aɪ wɪl ɡoʊ wɪð ju/'],
+      blankIpas: ['/ɪf ju wɒnt tu ɡoʊ aɪ wɪl ɡoʊ wɪð ju/'],
     },
   },
 
@@ -495,7 +495,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'C_connector',
     level: 'intermediate',
     keyword: 'although',
-    keywordRomanization: '/ɔːlˈðoʊ/',
+    keywordIpa: '/ɔːlˈðoʊ/',
     pattern: 'Although + S + V, S + V',
     patternZh: '雖然 + 句子, 主句',
     nameZh: '雖然／儘管',
@@ -506,32 +506,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'Although it was raining, we went out.',
-        romanization: '/ɔːlˈðoʊ ɪt wɒz ˈreɪnɪŋ wi went aʊt/',
+        english: 'Although it was raining, we went out.',
+        ipa: '/ɔːlˈðoʊ ɪt wɒz ˈreɪnɪŋ wi went aʊt/',
         chinese: '雖然下著雨，我們還是出門了。',
         difficulty: 'medium',
         words: [
-          { thai: 'although', rom: '/ɔːlˈðoʊ/', zh: '雖然' },
-          { thai: 'go out', rom: '/ɡoʊ aʊt/', zh: '出門' },
+          { english: 'although', ipa: '/ɔːlˈðoʊ/', zh: '雖然' },
+          { english: 'go out', ipa: '/ɡoʊ aʊt/', zh: '出門' },
         ],
       },
       {
-        thai: "Although he's tired, he keeps working.",
-        romanization: '/ɔːlˈðoʊ hiz ˈtaɪərd hi kiːps ˈwɜːrkɪŋ/',
+        english: "Although he's tired, he keeps working.",
+        ipa: '/ɔːlˈðoʊ hiz ˈtaɪərd hi kiːps ˈwɜːrkɪŋ/',
         chinese: '雖然他很累，還是繼續工作。',
         difficulty: 'medium',
         words: [
-          { thai: 'keep', rom: '/kiːp/', zh: '保持、繼續' },
-          { thai: 'working', rom: '/ˈwɜːrkɪŋ/', zh: '工作（V-ing）' },
+          { english: 'keep', ipa: '/kiːp/', zh: '保持、繼續' },
+          { english: 'working', ipa: '/ˈwɜːrkɪŋ/', zh: '工作（V-ing）' },
         ],
       },
       {
-        thai: "Although the food was expensive, it wasn't very good.",
-        romanization: '/ɔːlˈðoʊ ðə fuːd wɒz ɪkˈspensɪv ɪt ˈwɒznt ˈveri ɡʊd/',
+        english: "Although the food was expensive, it wasn't very good.",
+        ipa: '/ɔːlˈðoʊ ðə fuːd wɒz ɪkˈspensɪv ɪt ˈwɒznt ˈveri ɡʊd/',
         chinese: '雖然這頓飯很貴，但其實不太好吃。',
         difficulty: 'hard',
         words: [
-          { thai: 'expensive', rom: '/ɪkˈspensɪv/', zh: '昂貴的' },
+          { english: 'expensive', ipa: '/ɪkˈspensɪv/', zh: '昂貴的' },
         ],
       },
     ],
@@ -539,7 +539,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '雖然她很忙，她還是來幫我。（用 although）',
       blanks: ['Although she was busy, she came to help me.'],
       hint: 'Although + S + V, S + V',
-      blankRomanizations: ['/ɔːlˈðoʊ ʃi wɒz ˈbɪzi ʃi keɪm tu help miː/'],
+      blankIpas: ['/ɔːlˈðoʊ ʃi wɒz ˈbɪzi ʃi keɪm tu help miː/'],
     },
   },
 
@@ -551,7 +551,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'D_question',
     level: 'beginner',
     keyword: 'Do/Does ... ?',
-    keywordRomanization: '/du dʌz/',
+    keywordIpa: '/du dʌz/',
     pattern: 'Do/Does + S + V (原形) ?',
     patternZh: 'Do/Does + 主詞 + 動詞原形？',
     nameZh: 'Yes/No 問句（一般動詞）',
@@ -562,32 +562,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'Do you like coffee?',
-        romanization: '/du ju laɪk ˈkɒfi/',
+        english: 'Do you like coffee?',
+        ipa: '/du ju laɪk ˈkɒfi/',
         chinese: '你喜歡咖啡嗎？',
         difficulty: 'easy',
         words: [
-          { thai: 'like', rom: '/laɪk/', zh: '喜歡' },
-          { thai: 'coffee', rom: '/ˈkɒfi/', zh: '咖啡' },
+          { english: 'like', ipa: '/laɪk/', zh: '喜歡' },
+          { english: 'coffee', ipa: '/ˈkɒfi/', zh: '咖啡' },
         ],
       },
       {
-        thai: 'Does she work in Taipei?',
-        romanization: '/dʌz ʃi wɜːrk ɪn taɪˈpeɪ/',
+        english: 'Does she work in Taipei?',
+        ipa: '/dʌz ʃi wɜːrk ɪn taɪˈpeɪ/',
         chinese: '她在台北工作嗎？',
         difficulty: 'easy',
         words: [
-          { thai: 'work', rom: '/wɜːrk/', zh: '工作' },
+          { english: 'work', ipa: '/wɜːrk/', zh: '工作' },
         ],
       },
       {
-        thai: 'Do they speak Chinese?',
-        romanization: '/du ðeɪ spiːk tʃaɪˈniːz/',
+        english: 'Do they speak Chinese?',
+        ipa: '/du ðeɪ spiːk tʃaɪˈniːz/',
         chinese: '他們會講中文嗎？',
         difficulty: 'easy',
         words: [
-          { thai: 'speak', rom: '/spiːk/', zh: '說' },
-          { thai: 'Chinese', rom: '/tʃaɪˈniːz/', zh: '中文' },
+          { english: 'speak', ipa: '/spiːk/', zh: '說' },
+          { english: 'Chinese', ipa: '/tʃaɪˈniːz/', zh: '中文' },
         ],
       },
     ],
@@ -595,7 +595,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '你會開車嗎？',
       blanks: ['Do you drive?'],
       hint: 'Do/Does + S + V (原形)？',
-      blankRomanizations: ['/du ju draɪv/'],
+      blankIpas: ['/du ju draɪv/'],
     },
   },
 
@@ -604,7 +604,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'D_question',
     level: 'beginner',
     keyword: 'Wh- ... ?',
-    keywordRomanization: '/wʌt wer wen huː waɪ haʊ/',
+    keywordIpa: '/wʌt wer wen huː waɪ haʊ/',
     pattern: 'What/Where/When/Who/Why/How + (do/does/is/are) + S + V ?',
     patternZh: '疑問詞 + 助動詞 + 主詞 + 動詞？',
     nameZh: 'Wh- 問句',
@@ -612,32 +612,32 @@ export const grammarPatterns: GrammarPattern[] = [
     tipZh: 'How + adj/adv 是高頻組合：How much / How long / How often。',
     examples: [
       {
-        thai: 'Where do you live?',
-        romanization: '/wer du ju lɪv/',
+        english: 'Where do you live?',
+        ipa: '/wer du ju lɪv/',
         chinese: '你住在哪裡？',
         difficulty: 'easy',
         words: [
-          { thai: 'where', rom: '/wer/', zh: '哪裡' },
-          { thai: 'live', rom: '/lɪv/', zh: '住' },
+          { english: 'where', ipa: '/wer/', zh: '哪裡' },
+          { english: 'live', ipa: '/lɪv/', zh: '住' },
         ],
       },
       {
-        thai: 'What does she want?',
-        romanization: '/wʌt dʌz ʃi wɒnt/',
+        english: 'What does she want?',
+        ipa: '/wʌt dʌz ʃi wɒnt/',
         chinese: '她想要什麼？',
         difficulty: 'easy',
         words: [
-          { thai: 'want', rom: '/wɒnt/', zh: '想要' },
+          { english: 'want', ipa: '/wɒnt/', zh: '想要' },
         ],
       },
       {
-        thai: 'How often do you exercise?',
-        romanization: '/haʊ ˈɒfn du ju ˈeksərsaɪz/',
+        english: 'How often do you exercise?',
+        ipa: '/haʊ ˈɒfn du ju ˈeksərsaɪz/',
         chinese: '你多久運動一次？',
         difficulty: 'medium',
         words: [
-          { thai: 'how often', rom: '/haʊ ˈɒfn/', zh: '多常' },
-          { thai: 'exercise', rom: '/ˈeksərsaɪz/', zh: '運動' },
+          { english: 'how often', ipa: '/haʊ ˈɒfn/', zh: '多常' },
+          { english: 'exercise', ipa: '/ˈeksərsaɪz/', zh: '運動' },
         ],
       },
     ],
@@ -645,7 +645,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '你為什麼學英文？',
       blanks: ['Why do you study English?'],
       hint: 'Why + do + 主詞 + 動詞原形？',
-      blankRomanizations: ['/waɪ du ju ˈstʌdi ˈɪŋɡlɪʃ/'],
+      blankIpas: ['/waɪ du ju ˈstʌdi ˈɪŋɡlɪʃ/'],
     },
   },
 
@@ -654,7 +654,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'D_question',
     level: 'intermediate',
     keyword: "..., isn't it?",
-    keywordRomanization: '/ˈɪznt ɪt/',
+    keywordIpa: '/ˈɪznt ɪt/',
     pattern: 'S + V ..., 反向助動詞 + S?',
     patternZh: '肯定句 + 否定附加問句 / 否定句 + 肯定附加問句',
     nameZh: '附加問句（tag question）',
@@ -665,30 +665,30 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: "It's a beautiful day, isn't it?",
-        romanization: '/ɪts ə ˈbjuːtɪfl deɪ ˈɪznt ɪt/',
+        english: "It's a beautiful day, isn't it?",
+        ipa: '/ɪts ə ˈbjuːtɪfl deɪ ˈɪznt ɪt/',
         chinese: '今天天氣很好，對吧？',
         difficulty: 'medium',
         words: [
-          { thai: 'beautiful', rom: '/ˈbjuːtɪfl/', zh: '美麗的' },
+          { english: 'beautiful', ipa: '/ˈbjuːtɪfl/', zh: '美麗的' },
         ],
       },
       {
-        thai: "You don't smoke, do you?",
-        romanization: '/ju doʊnt smoʊk du ju/',
+        english: "You don't smoke, do you?",
+        ipa: '/ju doʊnt smoʊk du ju/',
         chinese: '你不抽菸，對吧？',
         difficulty: 'medium',
         words: [
-          { thai: 'smoke', rom: '/smoʊk/', zh: '抽菸' },
+          { english: 'smoke', ipa: '/smoʊk/', zh: '抽菸' },
         ],
       },
       {
-        thai: "She can drive, can't she?",
-        romanization: '/ʃi kæn draɪv kænt ʃi/',
+        english: "She can drive, can't she?",
+        ipa: '/ʃi kæn draɪv kænt ʃi/',
         chinese: '她會開車吧？',
         difficulty: 'hard',
         words: [
-          { thai: 'drive', rom: '/draɪv/', zh: '開車' },
+          { english: 'drive', ipa: '/draɪv/', zh: '開車' },
         ],
       },
     ],
@@ -696,7 +696,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '你喜歡咖啡，對吧？',
       blanks: ["You like coffee, don't you?"],
       hint: "肯定句後面接 don't + 主詞？",
-      blankRomanizations: ['/ju laɪk ˈkɒfi doʊnt ju/'],
+      blankIpas: ['/ju laɪk ˈkɒfi doʊnt ju/'],
     },
   },
 
@@ -708,7 +708,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'E_comparison',
     level: 'beginner',
     keyword: '-er than',
-    keywordRomanization: '/ər ðæn/',
+    keywordIpa: '/ər ðæn/',
     pattern: 'S + V + adj-er + than + ...',
     patternZh: '主詞 + 動詞 + 比較級 + than + 比較對象',
     nameZh: '比較級',
@@ -720,31 +720,31 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'He is taller than his brother.',
-        romanization: '/hi ɪz ˈtɔːlər ðæn hɪz ˈbrʌðər/',
+        english: 'He is taller than his brother.',
+        ipa: '/hi ɪz ˈtɔːlər ðæn hɪz ˈbrʌðər/',
         chinese: '他比他弟弟高。',
         difficulty: 'easy',
         words: [
-          { thai: 'tall', rom: '/tɔːl/', zh: '高' },
-          { thai: 'brother', rom: '/ˈbrʌðər/', zh: '兄弟' },
+          { english: 'tall', ipa: '/tɔːl/', zh: '高' },
+          { english: 'brother', ipa: '/ˈbrʌðər/', zh: '兄弟' },
         ],
       },
       {
-        thai: 'This book is more interesting than that one.',
-        romanization: '/ðɪs bʊk ɪz mɔːr ˈɪntrəstɪŋ ðæn ðæt wʌn/',
+        english: 'This book is more interesting than that one.',
+        ipa: '/ðɪs bʊk ɪz mɔːr ˈɪntrəstɪŋ ðæn ðæt wʌn/',
         chinese: '這本書比那本有趣。',
         difficulty: 'medium',
         words: [
-          { thai: 'interesting', rom: '/ˈɪntrəstɪŋ/', zh: '有趣的' },
+          { english: 'interesting', ipa: '/ˈɪntrəstɪŋ/', zh: '有趣的' },
         ],
       },
       {
-        thai: 'My job is harder than yours.',
-        romanization: '/maɪ dʒɒb ɪz ˈhɑːrdər ðæn jɔːrz/',
+        english: 'My job is harder than yours.',
+        ipa: '/maɪ dʒɒb ɪz ˈhɑːrdər ðæn jɔːrz/',
         chinese: '我的工作比你的辛苦。',
         difficulty: 'medium',
         words: [
-          { thai: 'hard', rom: '/hɑːrd/', zh: '困難、辛苦' },
+          { english: 'hard', ipa: '/hɑːrd/', zh: '困難、辛苦' },
         ],
       },
     ],
@@ -752,7 +752,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '今天比昨天熱。',
       blanks: ['Today is hotter than yesterday.'],
       hint: '主詞 + is + adj-er + than + 對象',
-      blankRomanizations: ['/təˈdeɪ ɪz ˈhɒtər ðæn ˈjestərdeɪ/'],
+      blankIpas: ['/təˈdeɪ ɪz ˈhɒtər ðæn ˈjestərdeɪ/'],
     },
   },
 
@@ -761,7 +761,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'E_comparison',
     level: 'intermediate',
     keyword: 'the most',
-    keywordRomanization: '/ðə moʊst/',
+    keywordIpa: '/ðə moʊst/',
     pattern: 'S + V + the + adj-est / the most + adj',
     patternZh: '主詞 + 動詞 + the + 最高級',
     nameZh: '最高級',
@@ -772,32 +772,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'She is the smartest student in the class.',
-        romanization: '/ʃi ɪz ðə ˈsmɑːrtɪst ˈstuːdnt ɪn ðə klæs/',
+        english: 'She is the smartest student in the class.',
+        ipa: '/ʃi ɪz ðə ˈsmɑːrtɪst ˈstuːdnt ɪn ðə klæs/',
         chinese: '她是班上最聰明的學生。',
         difficulty: 'easy',
         words: [
-          { thai: 'smart', rom: '/smɑːrt/', zh: '聰明的' },
-          { thai: 'class', rom: '/klæs/', zh: '班級' },
+          { english: 'smart', ipa: '/smɑːrt/', zh: '聰明的' },
+          { english: 'class', ipa: '/klæs/', zh: '班級' },
         ],
       },
       {
-        thai: "This is the most expensive watch I've ever seen.",
-        romanization: '/ðɪs ɪz ðə moʊst ɪkˈspensɪv wɒtʃ aɪv ˈevər siːn/',
+        english: "This is the most expensive watch I've ever seen.",
+        ipa: '/ðɪs ɪz ðə moʊst ɪkˈspensɪv wɒtʃ aɪv ˈevər siːn/',
         chinese: '這是我看過最貴的手錶。',
         difficulty: 'medium',
         words: [
-          { thai: 'expensive', rom: '/ɪkˈspensɪv/', zh: '昂貴的' },
-          { thai: 'watch', rom: '/wɒtʃ/', zh: '手錶' },
+          { english: 'expensive', ipa: '/ɪkˈspensɪv/', zh: '昂貴的' },
+          { english: 'watch', ipa: '/wɒtʃ/', zh: '手錶' },
         ],
       },
       {
-        thai: 'August is the hottest month here.',
-        romanization: '/ˈɔːɡəst ɪz ðə ˈhɒtɪst mʌnθ hɪər/',
+        english: 'August is the hottest month here.',
+        ipa: '/ˈɔːɡəst ɪz ðə ˈhɒtɪst mʌnθ hɪər/',
         chinese: '八月是這裡最熱的月份。',
         difficulty: 'medium',
         words: [
-          { thai: 'hot', rom: '/hɒt/', zh: '熱的' },
+          { english: 'hot', ipa: '/hɒt/', zh: '熱的' },
         ],
       },
     ],
@@ -805,7 +805,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '這是我家最好吃的料理。（用最高級）',
       blanks: ['This is the best dish in my family.'],
       hint: 'good 的最高級是 the best',
-      blankRomanizations: ['/ðɪs ɪz ðə best dɪʃ ɪn maɪ ˈfæməli/'],
+      blankIpas: ['/ðɪs ɪz ðə best dɪʃ ɪn maɪ ˈfæməli/'],
     },
   },
 
@@ -814,7 +814,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'E_comparison',
     level: 'intermediate',
     keyword: 'as ... as',
-    keywordRomanization: '/æz æz/',
+    keywordIpa: '/æz æz/',
     pattern: 'S + V + as + adj/adv + as + ...',
     patternZh: '主詞 + 動詞 + as + 形容詞/副詞 + as + 比較對象',
     nameZh: '同級比較（一樣 / 不一樣）',
@@ -824,32 +824,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'She is as tall as her sister.',
-        romanization: '/ʃi ɪz æz tɔːl æz hər ˈsɪstər/',
+        english: 'She is as tall as her sister.',
+        ipa: '/ʃi ɪz æz tɔːl æz hər ˈsɪstər/',
         chinese: '她跟她姐姐一樣高。',
         difficulty: 'easy',
         words: [
-          { thai: 'tall', rom: '/tɔːl/', zh: '高' },
-          { thai: 'sister', rom: '/ˈsɪstər/', zh: '姊妹' },
+          { english: 'tall', ipa: '/tɔːl/', zh: '高' },
+          { english: 'sister', ipa: '/ˈsɪstər/', zh: '姊妹' },
         ],
       },
       {
-        thai: "This movie isn't as good as the first one.",
-        romanization: '/ðɪs ˈmuːvi ˈɪznt æz ɡʊd æz ðə fɜːrst wʌn/',
+        english: "This movie isn't as good as the first one.",
+        ipa: '/ðɪs ˈmuːvi ˈɪznt æz ɡʊd æz ðə fɜːrst wʌn/',
         chinese: '這部電影沒有第一集好看。',
         difficulty: 'medium',
         words: [
-          { thai: 'movie', rom: '/ˈmuːvi/', zh: '電影' },
+          { english: 'movie', ipa: '/ˈmuːvi/', zh: '電影' },
         ],
       },
       {
-        thai: 'Try to run as fast as you can.',
-        romanization: '/traɪ tu rʌn æz fæst æz ju kæn/',
+        english: 'Try to run as fast as you can.',
+        ipa: '/traɪ tu rʌn æz fæst æz ju kæn/',
         chinese: '盡你所能跑得越快越好。',
         difficulty: 'medium',
         words: [
-          { thai: 'try', rom: '/traɪ/', zh: '嘗試' },
-          { thai: 'fast', rom: '/fæst/', zh: '快' },
+          { english: 'try', ipa: '/traɪ/', zh: '嘗試' },
+          { english: 'fast', ipa: '/fæst/', zh: '快' },
         ],
       },
     ],
@@ -857,7 +857,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '他跟我一樣忙。',
       blanks: ['He is as busy as me.'],
       hint: 'S + is + as + adj + as + 對象',
-      blankRomanizations: ['/hi ɪz æz ˈbɪzi æz miː/'],
+      blankIpas: ['/hi ɪz æz ˈbɪzi æz miː/'],
     },
   },
 
@@ -869,7 +869,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'F_confusable',
     level: 'beginner',
     keyword: 'a / an',
-    keywordRomanization: '/ə æn/',
+    keywordIpa: '/ə æn/',
     pattern: 'a + 子音「發音」開頭 / an + 母音「發音」開頭',
     patternZh: 'a + 子音開頭 / an + 母音開頭',
     nameZh: 'a 與 an 的選擇',
@@ -880,31 +880,31 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I bought a new phone.',
-        romanization: '/aɪ bɔːt ə njuː foʊn/',
+        english: 'I bought a new phone.',
+        ipa: '/aɪ bɔːt ə njuː foʊn/',
         chinese: '我買了一支新手機。',
         difficulty: 'easy',
         words: [
-          { thai: 'bought', rom: '/bɔːt/', zh: 'buy 的過去式' },
-          { thai: 'phone', rom: '/foʊn/', zh: '手機' },
+          { english: 'bought', ipa: '/bɔːt/', zh: 'buy 的過去式' },
+          { english: 'phone', ipa: '/foʊn/', zh: '手機' },
         ],
       },
       {
-        thai: 'She is an engineer.',
-        romanization: '/ʃi ɪz ən ˌendʒɪˈnɪər/',
+        english: 'She is an engineer.',
+        ipa: '/ʃi ɪz ən ˌendʒɪˈnɪər/',
         chinese: '她是工程師。',
         difficulty: 'easy',
         words: [
-          { thai: 'engineer', rom: '/ˌendʒɪˈnɪər/', zh: '工程師' },
+          { english: 'engineer', ipa: '/ˌendʒɪˈnɪər/', zh: '工程師' },
         ],
       },
       {
-        thai: 'It takes an hour to get there.',
-        romanization: '/ɪt teɪks ən ˈaʊər tu ɡet ðer/',
+        english: 'It takes an hour to get there.',
+        ipa: '/ɪt teɪks ən ˈaʊər tu ɡet ðer/',
         chinese: '到那邊要一個小時。',
         difficulty: 'medium',
         words: [
-          { thai: 'hour', rom: '/ˈaʊər/', zh: '小時' },
+          { english: 'hour', ipa: '/ˈaʊər/', zh: '小時' },
         ],
       },
     ],
@@ -912,7 +912,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我有一個想法。',
       blanks: ['I have an idea.'],
       hint: 'idea 開頭是 /aɪ/，母音音',
-      blankRomanizations: ['/aɪ hæv ən aɪˈdɪə/'],
+      blankIpas: ['/aɪ hæv ən aɪˈdɪə/'],
     },
   },
 
@@ -921,7 +921,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'F_confusable',
     level: 'beginner',
     keyword: 'much / many / a lot of',
-    keywordRomanization: '/mʌtʃ ˈmeni ə lɒt əv/',
+    keywordIpa: '/mʌtʃ ˈmeni ə lɒt əv/',
     pattern: 'many + 可數複數 / much + 不可數 / a lot of + 兩者皆可',
     patternZh: 'many + 可數複數 / much + 不可數 / a lot of 兩者皆可',
     nameZh: 'much / many / a lot of',
@@ -932,33 +932,33 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I have many friends in Taipei.',
-        romanization: '/aɪ hæv ˈmeni frendz ɪn taɪˈpeɪ/',
+        english: 'I have many friends in Taipei.',
+        ipa: '/aɪ hæv ˈmeni frendz ɪn taɪˈpeɪ/',
         chinese: '我在台北有很多朋友。',
         difficulty: 'easy',
         words: [
-          { thai: 'many', rom: '/ˈmeni/', zh: '許多（可數）' },
-          { thai: 'friends', rom: '/frendz/', zh: '朋友（複數）' },
+          { english: 'many', ipa: '/ˈmeni/', zh: '許多（可數）' },
+          { english: 'friends', ipa: '/frendz/', zh: '朋友（複數）' },
         ],
       },
       {
-        thai: "I don't have much time.",
-        romanization: '/aɪ doʊnt hæv mʌtʃ taɪm/',
+        english: "I don't have much time.",
+        ipa: '/aɪ doʊnt hæv mʌtʃ taɪm/',
         chinese: '我沒有很多時間。',
         difficulty: 'easy',
         words: [
-          { thai: 'much', rom: '/mʌtʃ/', zh: '許多（不可數）' },
-          { thai: 'time', rom: '/taɪm/', zh: '時間' },
+          { english: 'much', ipa: '/mʌtʃ/', zh: '許多（不可數）' },
+          { english: 'time', ipa: '/taɪm/', zh: '時間' },
         ],
       },
       {
-        thai: 'She drinks a lot of coffee every day.',
-        romanization: '/ʃi drɪŋks ə lɒt əv ˈkɒfi ˈevri deɪ/',
+        english: 'She drinks a lot of coffee every day.',
+        ipa: '/ʃi drɪŋks ə lɒt əv ˈkɒfi ˈevri deɪ/',
         chinese: '她每天喝很多咖啡。',
         difficulty: 'medium',
         words: [
-          { thai: 'a lot of', rom: '/ə lɒt əv/', zh: '許多' },
-          { thai: 'every day', rom: '/ˈevri deɪ/', zh: '每天' },
+          { english: 'a lot of', ipa: '/ə lɒt əv/', zh: '許多' },
+          { english: 'every day', ipa: '/ˈevri deɪ/', zh: '每天' },
         ],
       },
     ],
@@ -966,7 +966,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我們有很多錢。',
       blanks: ['We have a lot of money.'],
       hint: 'money 是不可數；肯定句用 a lot of 最自然',
-      blankRomanizations: ['/wi hæv ə lɒt əv ˈmʌni/'],
+      blankIpas: ['/wi hæv ə lɒt əv ˈmʌni/'],
     },
   },
 
@@ -975,7 +975,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'F_confusable',
     level: 'intermediate',
     keyword: 'since / for',
-    keywordRomanization: '/sɪns fɔːr/',
+    keywordIpa: '/sɪns fɔːr/',
     pattern: 'since + 時間「點」 / for + 時間「長度」',
     patternZh: 'since + 起點時間 / for + 持續時間',
     nameZh: 'since 與 for 的差別',
@@ -986,31 +986,31 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'I have lived here since 2020.',
-        romanization: '/aɪ hæv lɪvd hɪər sɪns ˈtwenti ˈtwenti/',
+        english: 'I have lived here since 2020.',
+        ipa: '/aɪ hæv lɪvd hɪər sɪns ˈtwenti ˈtwenti/',
         chinese: '我從 2020 年就住在這裡。',
         difficulty: 'medium',
         words: [
-          { thai: 'since', rom: '/sɪns/', zh: '自從' },
+          { english: 'since', ipa: '/sɪns/', zh: '自從' },
         ],
       },
       {
-        thai: 'She has worked here for five years.',
-        romanization: '/ʃi hæz wɜːrkt hɪər fɔːr faɪv jɪərz/',
+        english: 'She has worked here for five years.',
+        ipa: '/ʃi hæz wɜːrkt hɪər fɔːr faɪv jɪərz/',
         chinese: '她在這工作五年了。',
         difficulty: 'medium',
         words: [
-          { thai: 'for', rom: '/fɔːr/', zh: '持續（多久）' },
+          { english: 'for', ipa: '/fɔːr/', zh: '持續（多久）' },
         ],
       },
       {
-        thai: "We haven't seen each other since last summer.",
-        romanization: '/wi ˈhævnt siːn iːtʃ ˈʌðər sɪns læst ˈsʌmər/',
+        english: "We haven't seen each other since last summer.",
+        ipa: '/wi ˈhævnt siːn iːtʃ ˈʌðər sɪns læst ˈsʌmər/',
         chinese: '我們從去年夏天就沒見過了。',
         difficulty: 'hard',
         words: [
-          { thai: 'each other', rom: '/iːtʃ ˈʌðər/', zh: '彼此' },
-          { thai: 'last summer', rom: '/læst ˈsʌmər/', zh: '去年夏天' },
+          { english: 'each other', ipa: '/iːtʃ ˈʌðər/', zh: '彼此' },
+          { english: 'last summer', ipa: '/læst ˈsʌmər/', zh: '去年夏天' },
         ],
       },
     ],
@@ -1018,7 +1018,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我學英文兩年了。（用 for）',
       blanks: ['I have studied English for two years.'],
       hint: '完成式 + for + 時間長度',
-      blankRomanizations: ['/aɪ hæv ˈstʌdid ˈɪŋɡlɪʃ fɔːr tuː jɪərz/'],
+      blankIpas: ['/aɪ hæv ˈstʌdid ˈɪŋɡlɪʃ fɔːr tuː jɪərz/'],
     },
   },
 
@@ -1030,7 +1030,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'G_daily',
     level: 'beginner',
     keyword: 'How about ... ?',
-    keywordRomanization: '/haʊ əˈbaʊt/',
+    keywordIpa: '/haʊ əˈbaʊt/',
     pattern: 'How about + N / V-ing ?',
     patternZh: 'How about + 名詞 / 動名詞？',
     nameZh: '提議「…如何？」',
@@ -1041,31 +1041,31 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: 'How about pizza for dinner?',
-        romanization: '/haʊ əˈbaʊt ˈpiːtsə fɔːr ˈdɪnər/',
+        english: 'How about pizza for dinner?',
+        ipa: '/haʊ əˈbaʊt ˈpiːtsə fɔːr ˈdɪnər/',
         chinese: '晚餐吃披薩怎麼樣？',
         difficulty: 'easy',
         words: [
-          { thai: 'pizza', rom: '/ˈpiːtsə/', zh: '披薩' },
-          { thai: 'dinner', rom: '/ˈdɪnər/', zh: '晚餐' },
+          { english: 'pizza', ipa: '/ˈpiːtsə/', zh: '披薩' },
+          { english: 'dinner', ipa: '/ˈdɪnər/', zh: '晚餐' },
         ],
       },
       {
-        thai: 'How about going to the beach this weekend?',
-        romanization: '/haʊ əˈbaʊt ˈɡoʊɪŋ tu ðə biːtʃ ðɪs ˈwiːkend/',
+        english: 'How about going to the beach this weekend?',
+        ipa: '/haʊ əˈbaʊt ˈɡoʊɪŋ tu ðə biːtʃ ðɪs ˈwiːkend/',
         chinese: '這週末去海邊怎麼樣？',
         difficulty: 'medium',
         words: [
-          { thai: 'beach', rom: '/biːtʃ/', zh: '海邊' },
+          { english: 'beach', ipa: '/biːtʃ/', zh: '海邊' },
         ],
       },
       {
-        thai: "I'm tired. How about you?",
-        romanization: '/aɪm ˈtaɪərd haʊ əˈbaʊt ju/',
+        english: "I'm tired. How about you?",
+        ipa: '/aɪm ˈtaɪərd haʊ əˈbaʊt ju/',
         chinese: '我好累，你呢？',
         difficulty: 'easy',
         words: [
-          { thai: 'tired', rom: '/ˈtaɪərd/', zh: '累的' },
+          { english: 'tired', ipa: '/ˈtaɪərd/', zh: '累的' },
         ],
       },
     ],
@@ -1073,7 +1073,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '一起去看電影怎麼樣？',
       blanks: ['How about watching a movie together?'],
       hint: 'How about + V-ing',
-      blankRomanizations: ['/haʊ əˈbaʊt ˈwɒtʃɪŋ ə ˈmuːvi təˈɡeðər/'],
+      blankIpas: ['/haʊ əˈbaʊt ˈwɒtʃɪŋ ə ˈmuːvi təˈɡeðər/'],
     },
   },
 
@@ -1082,37 +1082,37 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'G_daily',
     level: 'beginner',
     keyword: "Let's ...",
-    keywordRomanization: '/lets/',
+    keywordIpa: '/lets/',
     pattern: "Let's + V (原形)",
     patternZh: "Let's + 動詞原形",
     nameZh: '提議「我們來…吧」',
     explanationZh: "Let's 是 let us 的縮寫，用來邀請大家一起做某件事。否定為 Let's not + V。",
     examples: [
       {
-        thai: "Let's go out for dinner.",
-        romanization: '/lets ɡoʊ aʊt fɔːr ˈdɪnər/',
+        english: "Let's go out for dinner.",
+        ipa: '/lets ɡoʊ aʊt fɔːr ˈdɪnər/',
         chinese: '我們出去吃晚餐吧。',
         difficulty: 'easy',
         words: [
-          { thai: 'go out', rom: '/ɡoʊ aʊt/', zh: '外出' },
+          { english: 'go out', ipa: '/ɡoʊ aʊt/', zh: '外出' },
         ],
       },
       {
-        thai: "Let's take a break.",
-        romanization: '/lets teɪk ə breɪk/',
+        english: "Let's take a break.",
+        ipa: '/lets teɪk ə breɪk/',
         chinese: '我們休息一下吧。',
         difficulty: 'easy',
         words: [
-          { thai: 'take a break', rom: '/teɪk ə breɪk/', zh: '休息一下' },
+          { english: 'take a break', ipa: '/teɪk ə breɪk/', zh: '休息一下' },
         ],
       },
       {
-        thai: "Let's not argue about it.",
-        romanization: '/lets nɒt ˈɑːrɡjuː əˈbaʊt ɪt/',
+        english: "Let's not argue about it.",
+        ipa: '/lets nɒt ˈɑːrɡjuː əˈbaʊt ɪt/',
         chinese: '我們不要再為這件事爭了。',
         difficulty: 'medium',
         words: [
-          { thai: 'argue', rom: '/ˈɑːrɡjuː/', zh: '爭論' },
+          { english: 'argue', ipa: '/ˈɑːrɡjuː/', zh: '爭論' },
         ],
       },
     ],
@@ -1120,7 +1120,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我們一起學英文吧。',
       blanks: ["Let's study English together."],
       hint: "Let's + V (原形)",
-      blankRomanizations: ['/lets ˈstʌdi ˈɪŋɡlɪʃ təˈɡeðər/'],
+      blankIpas: ['/lets ˈstʌdi ˈɪŋɡlɪʃ təˈɡeðər/'],
     },
   },
 
@@ -1129,7 +1129,7 @@ export const grammarPatterns: GrammarPattern[] = [
     category: 'G_daily',
     level: 'beginner',
     keyword: "I'd like ...",
-    keywordRomanization: '/aɪd laɪk/',
+    keywordIpa: '/aɪd laɪk/',
     pattern: "I'd like + N / I'd like to + V",
     patternZh: '我想要 + 名詞 / 我想要 + 做某事',
     nameZh: '禮貌地表達想要',
@@ -1140,32 +1140,32 @@ export const grammarPatterns: GrammarPattern[] = [
     ],
     examples: [
       {
-        thai: "I'd like a cup of tea, please.",
-        romanization: '/aɪd laɪk ə kʌp əv tiː pliːz/',
+        english: "I'd like a cup of tea, please.",
+        ipa: '/aɪd laɪk ə kʌp əv tiː pliːz/',
         chinese: '我想要一杯茶，謝謝。',
         difficulty: 'easy',
         words: [
-          { thai: 'a cup of', rom: '/ə kʌp əv/', zh: '一杯…' },
-          { thai: 'tea', rom: '/tiː/', zh: '茶' },
+          { english: 'a cup of', ipa: '/ə kʌp əv/', zh: '一杯…' },
+          { english: 'tea', ipa: '/tiː/', zh: '茶' },
         ],
       },
       {
-        thai: "I'd like to make a reservation.",
-        romanization: '/aɪd laɪk tu meɪk ə ˌrezərˈveɪʃn/',
+        english: "I'd like to make a reservation.",
+        ipa: '/aɪd laɪk tu meɪk ə ˌrezərˈveɪʃn/',
         chinese: '我想訂位。',
         difficulty: 'medium',
         words: [
-          { thai: 'reservation', rom: '/ˌrezərˈveɪʃn/', zh: '訂位' },
+          { english: 'reservation', ipa: '/ˌrezərˈveɪʃn/', zh: '訂位' },
         ],
       },
       {
-        thai: "I'd like to know more about this job.",
-        romanization: '/aɪd laɪk tu noʊ mɔːr əˈbaʊt ðɪs dʒɒb/',
+        english: "I'd like to know more about this job.",
+        ipa: '/aɪd laɪk tu noʊ mɔːr əˈbaʊt ðɪs dʒɒb/',
         chinese: '我想多了解這份工作。',
         difficulty: 'medium',
         words: [
-          { thai: 'know', rom: '/noʊ/', zh: '知道' },
-          { thai: 'job', rom: '/dʒɒb/', zh: '工作' },
+          { english: 'know', ipa: '/noʊ/', zh: '知道' },
+          { english: 'job', ipa: '/dʒɒb/', zh: '工作' },
         ],
       },
     ],
@@ -1173,7 +1173,7 @@ export const grammarPatterns: GrammarPattern[] = [
       question: '我想喝一杯咖啡。',
       blanks: ["I'd like a cup of coffee."],
       hint: "I'd like + 名詞片語",
-      blankRomanizations: ['/aɪd laɪk ə kʌp əv ˈkɒfi/'],
+      blankIpas: ['/aɪd laɪk ə kʌp əv ˈkɒfi/'],
     },
   },
 ]

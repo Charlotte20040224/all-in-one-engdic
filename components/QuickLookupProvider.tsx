@@ -11,8 +11,8 @@ interface AnchorState {
 }
 
 interface QuickResult {
-  thai: string
-  pinyin: string
+  english: string
+  ipa: string
   meaning: string
   pos?: string
   examples?: any[]
@@ -67,8 +67,8 @@ export function QuickLookupProvider({ children }: { children: React.ReactNode })
         return
       }
       setResult({
-        thai: data.thai,
-        pinyin: data.pinyin,
+        english: data.english,
+        ipa: data.ipa,
         meaning: data.meaning,
         pos: data.pos,
         examples: data.examples,
@@ -117,8 +117,8 @@ export function QuickLookupProvider({ children }: { children: React.ReactNode })
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          thai: result.thai,
-          pinyin: result.pinyin,
+          english: result.english,
+          ipa: result.ipa,
           meaning: result.meaning,
           pos: result.pos ?? null,
           examples: result.examples ?? [],
@@ -182,12 +182,12 @@ export function QuickLookupProvider({ children }: { children: React.ReactNode })
             {result && (
               <div className="space-y-2 pt-1">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white break-words">
-                    {result.thai}
+                  <span data-english className="text-2xl font-bold text-gray-900 dark:text-white break-words">
+                    {result.english}
                   </span>
-                  <SpeakButton text={result.thai} size="md" />
+                  <SpeakButton text={result.english} size="md" />
                 </div>
-                <div data-pinyin className="text-purple-600 dark:text-purple-400">{result.pinyin}</div>
+                <div data-ipa className="text-purple-600 dark:text-purple-400">{result.ipa}</div>
                 {result.pos && (
                   <span className="inline-block text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded">
                     {result.pos}

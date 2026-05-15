@@ -20,12 +20,12 @@ export async function POST(req: Request) {
   if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  if (!body?.thai || !body?.pinyin || !body?.zh) {
-    return NextResponse.json({ error: 'thai, pinyin, zh required' }, { status: 400 })
+  if (!body?.english || !body?.ipa || !body?.zh) {
+    return NextResponse.json({ error: 'english, ipa, zh required' }, { status: 400 })
   }
 
   const tooLongStr = findTooLongString({
-    thai: body.thai, pinyin: body.pinyin, pinyinUS: body.pinyinUS, pinyinGB: body.pinyinGB,
+    english: body.english, ipa: body.ipa, ipaUS: body.ipaUS, ipaGB: body.ipaGB,
     zh: body.zh, grammar: body.grammar, grammarPattern: body.grammarPattern,
   })
   if (tooLongStr) return NextResponse.json({ error: `${tooLongStr} too long (max 200)` }, { status: 400 })
@@ -36,10 +36,10 @@ export async function POST(req: Request) {
   const sentence = await prisma.sentence.create({
     data: {
       userId: session.user.id,
-      thai: body.thai,
-      pinyin: body.pinyin,
-      pinyinUS: body.pinyinUS ?? null,
-      pinyinGB: body.pinyinGB ?? null,
+      english: body.english,
+      ipa: body.ipa,
+      ipaUS: body.ipaUS ?? null,
+      ipaGB: body.ipaGB ?? null,
       zh: body.zh,
       grammar: body.grammar ?? null,
       grammarPattern: body.grammarPattern ?? null,

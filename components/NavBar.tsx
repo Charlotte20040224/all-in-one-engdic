@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '@/app/theme-provider'
-import { usePinyin } from '@/app/pinyin-provider'
+import { useIpa } from '@/app/ipa-provider'
 
 const primaryLinks = [
   { href: '/app',           label: '主頁',   icon: '🏠' },
@@ -25,7 +25,7 @@ const secondaryLinks: { href: string; label: string; icon: string }[] = [
 export function NavBar() {
   const pathname = usePathname()
   const { theme, toggle } = useTheme()
-  const { hidden: pinyinHidden, toggle: togglePinyin } = usePinyin()
+  const { hidden: pinyinHidden, toggle: toggleIpa } = useIpa()
   const [moreOpen, setMoreOpen] = useState(false)
   const moreRef = useRef<HTMLDivElement>(null)
 
@@ -98,7 +98,7 @@ export function NavBar() {
 
                 <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
 
-                <button onClick={() => { togglePinyin(); closeMore() }} className={menuItemClass}>
+                <button onClick={() => { toggleIpa(); closeMore() }} className={menuItemClass}>
                   <span>👁️</span>
                   <span>{pinyinHidden ? '顯示拼音' : '隱藏拼音'}</span>
                 </button>

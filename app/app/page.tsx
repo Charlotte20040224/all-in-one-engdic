@@ -96,9 +96,9 @@ export default function AppPage() {
 
     fetch('/api/sentences')
       .then(r => (r.ok ? r.json() : []))
-      .then((list: Array<{ thai: string }>) => {
+      .then((list: Array<{ english: string }>) => {
         if (!Array.isArray(list)) return
-        setSavedThai(new Set(list.map(s => s.thai)))
+        setSavedThai(new Set(list.map(s => s.english)))
       })
       .catch(() => {})
   }, [])
@@ -184,7 +184,7 @@ export default function AppPage() {
     const dayOfYear = Math.floor((now.getTime() - startOfYear) / 86400000)
     const initial = DAILY_SENTENCES[dayOfYear % DAILY_SENTENCES.length]
 
-    const updated = stored.includes(initial.thai) ? stored : [...stored, initial.thai]
+    const updated = stored.includes(initial.english) ? stored : [...stored, initial.english]
     if (updated !== stored) {
       try {
         localStorage.setItem(seenStorageKey, JSON.stringify(updated))
@@ -220,8 +220,8 @@ export default function AppPage() {
       const dayOfYear = Math.floor((now.getTime() - startOfYear) / 86400000)
       const initial = DAILY_SENTENCES[dayOfYear % DAILY_SENTENCES.length]
       setCurrentSentence(initial)
-      if (!seenToday.includes(initial.thai)) {
-        persistSeen([...seenToday, initial.thai])
+      if (!seenToday.includes(initial.english)) {
+        persistSeen([...seenToday, initial.english])
       }
     }
   }
@@ -246,15 +246,15 @@ export default function AppPage() {
   const themeRemaining = useMemo(() => {
     if (!currentSentence) return [] as DailySentence[]
     return DAILY_SENTENCES.filter(
-      s => s.context === currentSentence.context && !seenToday.includes(s.thai),
+      s => s.context === currentSentence.context && !seenToday.includes(s.english),
     )
   }, [currentSentence, seenToday])
 
   const showSentence = (s: DailySentence) => {
     setCurrentSentence(s)
     setSentenceError(null)
-    if (!seenToday.includes(s.thai)) {
-      persistSeen([...seenToday, s.thai])
+    if (!seenToday.includes(s.english)) {
+      persistSeen([...seenToday, s.english])
     }
   }
 
@@ -269,7 +269,7 @@ export default function AppPage() {
     const currentIdx = themes.indexOf(currentSentence.context)
     for (let i = 1; i <= themes.length; i++) {
       const t = themes[(currentIdx + i) % themes.length]
-      const unseen = DAILY_SENTENCES.find(s => s.context === t && !seenToday.includes(s.thai))
+      const unseen = DAILY_SENTENCES.find(s => s.context === t && !seenToday.includes(s.english))
       if (unseen) {
         showSentence(unseen)
         return
@@ -277,7 +277,7 @@ export default function AppPage() {
     }
   }
 
-  const isCurrentSaved = !!currentSentence && savedThai.has(currentSentence.thai)
+  const isCurrentSaved = !!currentSentence && savedThai.has(currentSentence.english)
 
   const addDailySentence = async () => {
     if (!currentSentence || sentenceSaving || isCurrentSaved) return
@@ -288,8 +288,8 @@ export default function AppPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          thai: currentSentence.thai,
-          pinyin: currentSentence.pinyin,
+          english: currentSentence.english,
+          ipa: currentSentence.ipa,
           zh: currentSentence.zh,
         }),
       })
@@ -300,7 +300,7 @@ export default function AppPage() {
       if (!res.ok) throw new Error('save failed')
       setSavedThai(prev => {
         const next = new Set(prev)
-        next.add(currentSentence.thai)
+        next.add(currentSentence.english)
         return next
       })
     } catch {
@@ -389,13 +389,13 @@ export default function AppPage() {
 
                 <div className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 border border-amber-200 dark:border-amber-800 rounded-xl shadow p-5">
           <div className="flex items-start gap-2 mb-2">
-            <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white leading-snug">
-              {currentSentence.thai}
+            <span data-english className="text-2xl font-bold text-gray-900 dark:text-white leading-snug">
+              {currentSentence.english}
             </span>
-            <SpeakButton text={currentSentence.thai} size="md" className="mt-1 shrink-0" />
+            <SpeakButton text={currentSentence.english} size="md" className="mt-1 shrink-0" />
           </div>
-          <div data-pinyin className="text-sm text-purple-600 dark:text-purple-400 mb-1">
-            {currentSentence.pinyin}
+          <div data-ipa className="text-sm text-purple-600 dark:text-purple-400 mb-1">
+            {currentSentence.ipa}
           </div>
           <div className="text-base font-medium text-gray-800 dark:text-gray-200 mb-4">
             {currentSentence.zh}

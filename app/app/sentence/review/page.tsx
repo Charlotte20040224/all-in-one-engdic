@@ -9,7 +9,7 @@ import {
   sentenceLevelLabel,
   sentenceLevelColor,
 } from '@/lib/sentenceSrs'
-import { getPinyinDisplay, type SentenceEntry, type VocabItem } from '@/lib/types'
+import { getIpaDisplay, type SentenceEntry, type VocabItem } from '@/lib/types'
 
 export default function SentenceReviewPage() {
   const [queue, setQueue] = useState<SentenceEntry[]>([])
@@ -33,9 +33,9 @@ export default function SentenceReviewPage() {
 
   useEffect(() => {
     if (!sentence) return
-    prefetchAudio(sentence.thai)
+    prefetchAudio(sentence.english)
     const next = queue[current + 1]
-    if (next) prefetchAudio(next.thai)
+    if (next) prefetchAudio(next.english)
   }, [current, queue, sentence])
 
   const rate = async (rating: 'hard' | 'ok' | 'easy') => {
@@ -129,9 +129,9 @@ export default function SentenceReviewPage() {
           {/* Front */}
           <div className="flip-card-front absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 flex flex-col items-center justify-center text-center">
             <div className="flex items-center gap-3 mb-3 flex-wrap justify-center">
-              <SpeakButton text={sentence.thai} size="md" />
-              <span data-thai className="text-2xl font-bold text-gray-900 dark:text-white break-words">
-                {sentence.thai}
+              <SpeakButton text={sentence.english} size="md" />
+              <span data-english className="text-2xl font-bold text-gray-900 dark:text-white break-words">
+                {sentence.english}
               </span>
             </div>
             <p className="text-gray-400 dark:text-gray-500 mt-8 text-sm">點擊翻面</p>
@@ -140,13 +140,13 @@ export default function SentenceReviewPage() {
           {/* Back */}
           <div className="flip-card-back absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 overflow-y-auto">
             <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <SpeakButton text={sentence.thai} size="md" />
-              <span data-thai className="text-xl font-bold text-gray-900 dark:text-white break-words">
-                {sentence.thai}
+              <SpeakButton text={sentence.english} size="md" />
+              <span data-english className="text-xl font-bold text-gray-900 dark:text-white break-words">
+                {sentence.english}
               </span>
             </div>
-            <div data-pinyin className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
-              {getPinyinDisplay(sentence).map((p, i) => (
+            <div data-ipa className="mb-1 text-purple-600 dark:text-purple-400 text-sm flex flex-wrap items-center gap-x-4 gap-y-1">
+              {getIpaDisplay(sentence).map((p, i) => (
                 <span key={i} className="flex items-center gap-1.5">
                   {p.label && <span>{p.label}</span>}
                   <span>{p.ipa}</span>
@@ -167,10 +167,10 @@ export default function SentenceReviewPage() {
                 <div className="text-xs font-semibold text-amber-700 dark:text-amber-300 pb-1">📝 句中單字</div>
                 {vocabulary.map((v, i) => (
                   <div key={i} className="py-1 flex items-start gap-1.5">
-                    <SpeakButton text={v.thai} size="sm" className="mt-0.5 shrink-0" />
+                    <SpeakButton text={v.english} size="sm" className="mt-0.5 shrink-0" />
                     <div>
-                      <span data-thai className="text-xs font-medium text-gray-800 dark:text-gray-200">{v.thai}</span>
-                      <div data-pinyin className="text-xs text-orange-500 dark:text-orange-400">{v.pinyin}</div>
+                      <span data-english className="text-xs font-medium text-gray-800 dark:text-gray-200">{v.english}</span>
+                      <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{v.ipa}</div>
                       <div className="text-xs text-amber-700 dark:text-amber-300">{v.meaning}</div>
                     </div>
                   </div>
@@ -179,7 +179,7 @@ export default function SentenceReviewPage() {
             )}
 
             <a
-              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.thai)}/english`}
+              href={`https://youglish.com/pronounce/${encodeURIComponent(sentence.english)}/english`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}

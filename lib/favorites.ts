@@ -5,16 +5,16 @@ export const FAVORITES_KEY = 'favorite-sentences'
 export const FAVORITE_WORDS_KEY = 'favorite-words'
 
 export interface FavoriteSentence {
-  thai: string
-  romanization?: string
+  english: string
+  ipa?: string
   chinese?: string
   source?: string  // e.g. "句型 #34", "單字 must"
   addedAt: number
 }
 
 export interface FavoriteWord {
-  thai: string
-  romanization?: string
+  english: string
+  ipa?: string
   chinese?: string
   savedAt: number
 }
@@ -40,14 +40,14 @@ export function writeFavorites(list: FavoriteSentence[]) {
   } catch {}
 }
 
-export function isFavorited(thai: string, list?: FavoriteSentence[]): boolean {
+export function isFavorited(english: string, list?: FavoriteSentence[]): boolean {
   const items = list ?? readFavorites()
-  return items.some(f => f.thai === thai)
+  return items.some(f => f.english === english)
 }
 
 export function toggleFavorite(entry: Omit<FavoriteSentence, 'addedAt'>): { added: boolean; list: FavoriteSentence[] } {
   const cur = readFavorites()
-  const i = cur.findIndex(f => f.thai === entry.thai)
+  const i = cur.findIndex(f => f.english === entry.english)
   let list: FavoriteSentence[]
   let added: boolean
   if (i >= 0) {
@@ -61,8 +61,8 @@ export function toggleFavorite(entry: Omit<FavoriteSentence, 'addedAt'>): { adde
   return { added, list }
 }
 
-export function removeFavorite(thai: string): FavoriteSentence[] {
-  const list = readFavorites().filter(f => f.thai !== thai)
+export function removeFavorite(english: string): FavoriteSentence[] {
+  const list = readFavorites().filter(f => f.english !== english)
   writeFavorites(list)
   return list
 }
@@ -88,14 +88,14 @@ export function writeFavoriteWords(list: FavoriteWord[]) {
   } catch {}
 }
 
-export function isFavoritedWord(thai: string, list?: FavoriteWord[]): boolean {
+export function isFavoritedWord(english: string, list?: FavoriteWord[]): boolean {
   const items = list ?? readFavoriteWords()
-  return items.some(f => f.thai === thai)
+  return items.some(f => f.english === english)
 }
 
 export function toggleFavoriteWord(entry: Omit<FavoriteWord, 'savedAt'>): { added: boolean; list: FavoriteWord[] } {
   const cur = readFavoriteWords()
-  const i = cur.findIndex(f => f.thai === entry.thai)
+  const i = cur.findIndex(f => f.english === entry.english)
   let list: FavoriteWord[]
   let added: boolean
   if (i >= 0) {
