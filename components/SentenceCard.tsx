@@ -34,9 +34,7 @@ export function SentenceCard({ sentence, onDelete, compact }: Props) {
                 source: '句子庫',
               }}
             />
-            <span data-english className="text-xl font-bold text-gray-900 dark:text-white break-words">
-              {sentence.english}
-            </span>
+            <ClickableWord text={sentence.english} className="text-xl font-bold text-gray-900 dark:text-white break-words" />
           </div>
           <div data-ipa className="mt-1 text-sm text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
             {getIpaDisplay(sentence).map((p, i) => (

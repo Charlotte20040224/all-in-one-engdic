@@ -212,9 +212,6 @@ function PatternView({
         <span data-english className="text-xl font-bold text-gray-900 dark:text-white">
           {p.keyword}
         </span>
-        <span data-ipa className="text-sm text-purple-600 dark:text-purple-400">
-          {p.keywordIpa}
-        </span>
       </div>
 
       {/* Pattern formula */}
@@ -283,7 +280,6 @@ function PatternView({
                         <span className={`text-xs text-gray-400 dark:text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
                       )}
                     </div>
-                    <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{ex.ipa}</div>
                     <div className="text-sm text-gray-700 dark:text-gray-300">{ex.chinese}</div>
                   </button>
                 </div>
@@ -294,7 +290,6 @@ function PatternView({
                         <SpeakButton text={w.english} size="sm" className="mt-0.5 shrink-0" />
                         <div>
                           <div data-english className="text-sm font-medium text-gray-800 dark:text-gray-200">{w.english}</div>
-                          <div data-ipa className="text-xs text-orange-500 dark:text-orange-400">{w.ipa}</div>
                           <div className="text-xs text-amber-700 dark:text-amber-300">{w.zh}</div>
                         </div>
                       </div>
@@ -324,41 +319,14 @@ function PatternView({
         <div className="text-xs text-gray-500 dark:text-gray-400 italic mb-2">提示：{p.quiz.hint}</div>
         {revealQuiz && (
           <div className="pt-2 border-t border-purple-200 dark:border-purple-800 space-y-3">
-            {/* 女生版（預設）— 沒有男生版時不標籤 */}
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                {p.quiz.blanksMale && (
-                  <span className="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300">女</span>
-                )}
                 <SpeakButton text={p.quiz.blanks.join(' ')} size="sm" />
                 <span data-english className="text-base font-medium text-gray-900 dark:text-white">
                   {p.quiz.blanks.join(' ')}
                 </span>
               </div>
-              {p.quiz.blankIpas && p.quiz.blankIpas.length > 0 && (
-                <div data-ipa className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
-                  {p.quiz.blankIpas.join(' ')}
-                </div>
-              )}
             </div>
-
-            {/* 男生版（如有性別差異） */}
-            {p.quiz.blanksMale && (
-              <div>
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs font-semibold shrink-0 px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">男</span>
-                  <SpeakButton text={p.quiz.blanksMale.join(' ')} size="sm" />
-                  <span data-english className="text-base font-medium text-gray-900 dark:text-white">
-                    {p.quiz.blanksMale.join(' ')}
-                  </span>
-                </div>
-                {p.quiz.blankIpasMale && p.quiz.blankIpasMale.length > 0 && (
-                  <div data-ipa className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 ml-8">
-                    {p.quiz.blankIpasMale.join(' ')}
-                  </div>
-                )}
-              </div>
-            )}
 
             <div className="flex items-center gap-2 pt-1">
               <button

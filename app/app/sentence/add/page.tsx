@@ -130,11 +130,9 @@ export default function SentenceAddPage() {
       {result && (
         <>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6 space-y-4">
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-3 flex-wrap">
               <SpeakButton text={result.english} size="md" />
-              <span data-english className="text-2xl font-bold text-gray-900 dark:text-white break-words">
-                {result.english}
-              </span>
+              <ClickableWord text={result.english} className="text-2xl font-bold text-gray-900 dark:text-white break-words" />
             </div>
             <div data-ipa className="text-purple-600 dark:text-purple-400 flex flex-wrap items-center gap-x-4 gap-y-1">
               {getIpaDisplay(result).map((p, i) => (

@@ -333,11 +333,10 @@ export default function ReviewPage() {
 
             {examples.slice(0, 2).map((ex: any, i: number) => (
               <div key={i} className="mb-3 border-l-2 border-purple-300 dark:border-purple-700 pl-3">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <SpeakButton text={ex.english} />
-                  <span data-english className="text-sm text-gray-800 dark:text-gray-200">{ex.english}</span>
+                  <ClickableWord text={ex.english} className="text-sm text-gray-800 dark:text-gray-200" />
                 </div>
-                <div data-ipa className="text-xs text-purple-600 dark:text-purple-400">{ex.ipa}</div>
                 <div className="text-xs text-gray-600 dark:text-gray-300">{ex.zh}</div>
                 {ex.vocabulary && ex.vocabulary.length > 0 && (
                   <div className="mt-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded">

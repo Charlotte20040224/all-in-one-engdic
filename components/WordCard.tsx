@@ -5,6 +5,7 @@ import { WordEntry, WordRef, Variant, VocabItem, getIpaDisplay } from '@/lib/typ
 import { srsLabel, srsColor } from '@/lib/srs'
 import { SpeakButton } from './SpeakButton'
 import { FavoriteButton } from './FavoriteButton'
+import { ClickableWord } from './ClickableWord'
 import { isFavoritedWord } from '@/lib/favorites'
 
 interface Props {
@@ -39,7 +40,7 @@ function WordRefRow({ item }: { item: WordRef }) {
     <div className="flex items-start gap-2 text-sm">
       <SpeakButton text={item.english} className="mt-0.5 shrink-0" />
       <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 min-w-0 flex-1">
-        <span data-english className="font-medium text-gray-800 dark:text-gray-200 break-words">{item.english}</span>
+        <ClickableWord text={item.english} className="font-medium text-gray-800 dark:text-gray-200 break-words" />
         <span data-ipa className="text-gray-500 dark:text-gray-400 break-words">{item.ipa}</span>
         <span className="text-gray-600 dark:text-gray-300 break-words">
           <span className="hidden sm:inline">— </span>{item.zh}
@@ -101,11 +102,10 @@ function ExampleRow({ ex }: { ex: any }) {
 
   return (
     <div className="border-l-2 border-purple-300 dark:border-purple-700 pl-3">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 flex-wrap">
         <SpeakButton text={ex.english} />
-        <span data-english className="text-gray-800 dark:text-gray-200">{ex.english}</span>
+        <ClickableWord text={ex.english} className="text-gray-800 dark:text-gray-200" />
       </div>
-      <div data-ipa className="text-sm text-purple-600 dark:text-purple-400">{ex.ipa}</div>
       <div className="text-sm text-gray-600 dark:text-gray-300">{ex.zh}</div>
       {vocab.length > 0 && (
         <div className="mt-1 bg-amber-50 dark:bg-amber-900/20 px-2 py-1.5 rounded">
@@ -122,7 +122,7 @@ function ExampleRow({ ex }: { ex: any }) {
             <div className="mt-1 divide-y divide-amber-200 dark:divide-amber-800">
               {vocab.map((v, vi) => (
                 <div key={vi} className="py-1 first:pt-0 last:pb-0 flex items-baseline gap-3 text-xs">
-                  <span data-english className="font-medium text-gray-800 dark:text-gray-200">{v.english}</span>
+                  <ClickableWord text={v.english} className="font-medium text-gray-800 dark:text-gray-200" />
                   <span data-ipa className="text-orange-500 dark:text-orange-400">{v.ipa}</span>
                   <span className="text-amber-700 dark:text-amber-300">{v.meaning}</span>
                 </div>
@@ -317,9 +317,9 @@ export function WordCard({ word, onDelete, compact }: Props) {
               <div className="space-y-2">
                 {variants.map((v: Variant, i: number) => (
                   <div key={i} className="flex flex-col gap-0.5 border-l-2 border-indigo-300 dark:border-indigo-700 pl-3">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <SpeakButton text={v.english} />
-                      <span data-english className="text-lg font-bold text-gray-900 dark:text-white">{v.english}</span>
+                      <ClickableWord text={v.english} className="text-lg font-bold text-gray-900 dark:text-white" />
                       <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${frequencyBadge[v.frequency] ?? frequencyBadge['較少用']}`}>{v.frequency}</span>
                     </div>
                     <div data-ipa className="text-sm text-orange-500 dark:text-orange-400">{v.ipa}</div>
